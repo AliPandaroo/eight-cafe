@@ -1,0 +1,14 @@
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  serverExternalPackages: ["@libsql/client"],
+  images: {
+    localPatterns: [
+      { pathname: "/uploads/**" },
+      { pathname: "/static/**" },
+    ],
+  },
+  allowedDevOrigins: ["172.25.240.1"],
+};
+
+export default nextConfig;
