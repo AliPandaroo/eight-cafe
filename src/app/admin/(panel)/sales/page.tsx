@@ -1,8 +1,9 @@
-import { BulkCoffeeCalculator } from "@/components/admin/bulk-coffee-calculator";
-import { BulkCoffeeSales } from "@/components/admin/bulk-coffee-sales";
-import { BulkCoffeeTypes } from "@/components/admin/bulk-coffee-types";
-import { MoneyStat } from "@/components/admin/money-stat";
-import { Grid, Stack } from "@/components/layout";
+import { BulkCoffeeCalculator } from "@/components/admin/bulk-coffee/calculator";
+import { BulkCoffeeSales } from "@/components/admin/bulk-coffee/sales";
+import { BulkCoffeeSections } from "@/components/admin/bulk-coffee/sections";
+import { BulkCoffeeTypes } from "@/components/admin/bulk-coffee/types";
+import { MoneyStat } from "@/components/admin/shared/money-stat";
+import { Stack } from "@/components/layout";
 import { requireManager } from "@/lib/admin/session";
 import {
   listBulkCoffeeSales,
@@ -33,45 +34,25 @@ export default async function AdminSalesPage() {
         </p>
       </Stack>
 
-      <MoneyStat label="فله این هفته" value={sumBulkCoffeeAmount(saleItems)} />
+      <MoneyStat label="فله" value={sumBulkCoffeeAmount(saleItems)} />
 
-      <Grid cols={2} gap={3}  className="grid-cols-1 md:grid-cols-2 justify-between content-between">
-        <Stack
-          gap={3}
-          className="max-w-5xl rounded-(--radius) border border-foreground/15 p-3"
-        >
-          <h2 className="text-sm font-semibold">قهوه روز</h2>
-          <p className="text-[11px] text-text/55">
-            انواع موجود و قیمت کیلو را اینجا بگذارید. فقط نوع‌های موجود در
-            ماشین‌حساب دیده می‌شوند.
-          </p>
-          {!types.ok ? (
+      <BulkCoffeeSections
+        types={
+          !types.ok ? (
             <p className="text-sm text-red-200">{types.error}</p>
           ) : (
             <BulkCoffeeTypes types={typeItems} />
-          )}
-        </Stack>
-
-        <Stack
-          gap={3}
-          className="max-w-xl rounded-(--radius) border border-foreground/15 p-3 h-fit"
-        >
-          <h2 className="text-sm font-semibold">ماشین‌حساب فله</h2>
-          <BulkCoffeeCalculator types={typeItems} />
-        </Stack>
-      </Grid>
-
-      <Stack
-        gap={3}
-        className="max-w-5xl rounded-(--radius) border border-foreground/15 p-3"
-      >
-        <h2 className="text-sm font-semibold">فروش‌های این هفته</h2>
-        {!sales.ok ? (
-          <p className="text-sm text-red-200">{sales.error}</p>
-        ) : (
-          <BulkCoffeeSales sales={saleItems} />
-        )}
-      </Stack>
+          )
+        }
+        calculator={<BulkCoffeeCalculator types={typeItems} />}
+        sales={
+          !sales.ok ? (
+            <p className="text-sm text-red-200">{sales.error}</p>
+          ) : (
+            <BulkCoffeeSales sales={saleItems} />
+          )
+        }
+      />
     </Stack>
   );
 }

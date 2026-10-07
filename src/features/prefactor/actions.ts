@@ -1,7 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-
+import { revalidatePaths } from "@/lib/admin/revalidate";
 import { getStaffSession } from "@/lib/admin/session";
 import { getPublicMenu } from "@/lib/menu/public";
 import { fail, ok } from "@/lib/menu/result";
@@ -73,10 +72,12 @@ export async function createPrefactorAction(input: unknown) {
 
   if (result.ok) {
     await occupyCafeTableByNumber(parsed.data.tableLabel);
-    revalidatePath("/admin/prefactors");
-    revalidatePath("/admin/ledger");
-    revalidatePath("/admin/tables");
-    revalidatePath("/admin");
+    revalidatePaths(
+      "/admin/prefactors",
+      "/admin/ledger",
+      "/admin/tables",
+      "/admin",
+    );
   }
 
   return result;
@@ -114,7 +115,7 @@ export async function markPrefactorDeliveredAction(id: string) {
   const result = await setPrefactorDelivered(id, true);
 
   if (result.ok) {
-    revalidatePath("/admin/prefactors");
+    revalidatePaths("/admin/prefactors");
   }
 
   return result;

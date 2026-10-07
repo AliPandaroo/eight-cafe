@@ -1,19 +1,11 @@
 import { z } from "zod";
 
-import { toAsciiDigits } from "@/lib/prefactor/table";
+import { parseUnsignedNumber } from "@/lib/parse/number";
 
 export function parseExpenseAmount(value: string) {
-  const normalized = toAsciiDigits(value)
-    .trim()
-    .replace(/[,\s٬]/g, "");
+  const amount = parseUnsignedNumber(value, { allowDecimal: true, min: 0 });
 
-  if (!normalized || !/^\d+(\.\d+)?$/.test(normalized)) {
-    return null;
-  }
-
-  const amount = Number(normalized);
-
-  if (!Number.isFinite(amount) || amount <= 0 || amount > 99_999_999_999) {
+  if (amount === null || amount <= 0) {
     return null;
   }
 

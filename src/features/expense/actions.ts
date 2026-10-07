@@ -1,29 +1,20 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-
-import { getStaffSession } from "@/lib/admin/session";
+import { rejectUnlessManager } from "@/lib/admin/guard";
+import { revalidatePaths } from "@/lib/admin/revalidate";
 import { createExpense, deleteExpense } from "@/lib/expense/store";
 import { fail } from "@/lib/menu/result";
 import { fieldErrorsFromZod } from "@/lib/menu/validation";
 import { createExpenseSchema } from "@/lib/validation/expense";
 
 function refreshLedger() {
-  revalidatePath("/admin/ledger");
-}
-
-async function rejectUnlessManager() {
-  const session = await getStaffSession();
-
-  if (session?.role !== "manager") {
-    return fail("فقط مدیر می‌تواند دخل و خرج را ببیند");
-  }
-
-  return null;
+  revalidatePaths("/admin/ledger", "/admin");
 }
 
 export async function createExpenseAction(_prev: unknown, formData: FormData) {
-  const denied = await rejectUnlessManager();
+  const denied = await rejectUnlessManager(
+    "فقط مدیر می‌تواند دخل و خرج را ببیند",
+  );
 
   if (denied) {
     return denied;
@@ -48,7 +39,9 @@ export async function createExpenseAction(_prev: unknown, formData: FormData) {
 }
 
 export async function deleteExpenseAction(id: string) {
-  const denied = await rejectUnlessManager();
+  const denied = await rejectUnlessManager(
+    "فقط مدیر می‌تواند دخل و خرج را ببیند",
+  );
 
   if (denied) {
     return denied;

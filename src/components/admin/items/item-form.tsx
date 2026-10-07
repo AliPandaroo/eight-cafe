@@ -1,12 +1,19 @@
 "use client";
 
-import { useActionState, useState, useSyncExternalStore } from "react";
+import {
+  useActionState,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 
-import { CategoryBadges } from "@/components/admin/category-badges";
+import { CategoryBadges } from "@/components/admin/categories/badges";
 import {
   getCategoryFilter,
   subscribeCategoryFilter,
-} from "@/components/admin/category-filter";
+} from "@/components/admin/categories/filter";
 import { Flex, Stack } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Textarea } from "@/components/ui/field";
@@ -245,31 +252,12 @@ export function ItemForm({
           </Field>
         )}
 
-        <Field label="تصویر">
-          <Input
-            name="image"
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-          />
-        </Field>
-
-        {item?.imageUrl && !removeImage ? (
-          <Stack gap={2}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={item.imageUrl}
-              alt={item.name}
-              className="h-28 w-28 rounded-(--radius) object-cover"
-            />
-            <Button
-              variant="ghost"
-              className="self-start"
-              onClick={() => setRemoveImage(true)}
-            >
-              حذف تصویر فعلی
-            </Button>
-          </Stack>
-        ) : null}
+        <ItemImageField
+          existingUrl={item?.imageUrl}
+          existingAlt={item?.name ?? "تصویر آیتم"}
+          removeExisting={removeImage}
+          onRemoveExisting={() => setRemoveImage(true)}
+        />
 
         <label className="flex cursor-pointer items-center gap-2 text-sm">
           <input
@@ -289,5 +277,113 @@ export function ItemForm({
         </Flex>
       </Stack>
     </form>
+  );
+}
+
+function ItemImageField({
+  existingUrl,
+  existingAlt,
+  removeExisting,
+  onRemoveExisting,
+}: {
+  existingUrl?: string | null;
+  existingAlt: string;
+  removeExisting: boolean;
+  onRemoveExisting: () => void;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const inputId = useId();
+  const [pickedUrl, setPickedUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (pickedUrl) {
+        URL.revokeObjectURL(pickedUrl);
+      }
+    };
+  }, [pickedUrl]);
+
+  function clearPicked() {
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+
+    setPickedUrl((current) => {
+      if (current) {
+        URL.revokeObjectURL(current);
+      }
+
+      return null;
+    });
+  }
+
+  const previewUrl = pickedUrl ?? (removeExisting ? null : (existingUrl ?? null));
+
+  return (
+    <Field label="تصویر">
+      <input
+        ref={inputRef}
+        id={inputId}
+        name="image"
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        className="sr-only"
+        onChange={(event) => {
+          const file = event.target.files?.[0];
+          setPickedUrl((current) => {
+            if (current) {
+              URL.revokeObjectURL(current);
+            }
+
+            return file ? URL.createObjectURL(file) : null;
+          });
+        }}
+      />
+      <Flex align="start" gap={3}>
+        {previewUrl ? (
+          <div className="relative size-16 shrink-0 overflow-hidden rounded-(--radius) bg-foreground/10 ring-1 ring-foreground/15">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={previewUrl}
+              alt={existingAlt}
+              className="size-full object-cover"
+            />
+          </div>
+        ) : (
+          <div
+            className="size-16 shrink-0 rounded-(--radius) bg-foreground/10 ring-1 ring-foreground/15"
+            aria-hidden
+          />
+        )}
+        <Stack gap={2} className="min-w-0">
+          <Flex gap={2} wrap="wrap">
+            <Button asChild variant="ghost" className="px-2 py-1">
+              <label htmlFor={inputId} className="cursor-pointer">
+                {previewUrl ? "تعویض تصویر" : "انتخاب تصویر"}
+              </label>
+            </Button>
+            {previewUrl ? (
+              <Button
+                variant="danger"
+                className="px-2 py-1"
+                onClick={() => {
+                  if (pickedUrl) {
+                    clearPicked();
+                    return;
+                  }
+
+                  onRemoveExisting();
+                }}
+              >
+                حذف
+              </Button>
+            ) : null}
+          </Flex>
+          <p className="text-[10px] text-text/55 md:text-xs">
+            JPG، PNG یا WebP، حداکثر ۴ مگابایت.
+          </p>
+        </Stack>
+      </Flex>
+    </Field>
   );
 }

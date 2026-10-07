@@ -1,27 +1,6 @@
 import { z } from "zod";
 
-import { toAsciiDigits } from "@/lib/prefactor/table";
-
-function parsePositiveNumber(value: string, allowDecimal: boolean) {
-  const normalized = toAsciiDigits(value)
-    .trim()
-    .replace(/[,\s٬]/g, "");
-
-  if (
-    !normalized ||
-    !(allowDecimal ? /^\d+(\.\d+)?$/ : /^\d+$/).test(normalized)
-  ) {
-    return null;
-  }
-
-  const amount = Number(normalized);
-
-  if (!Number.isFinite(amount) || amount <= 0 || amount > 99_999_999_999) {
-    return null;
-  }
-
-  return amount;
-}
+import { parseUnsignedNumber } from "@/lib/parse/number";
 
 const pricePerKgSchema = z
   .union([z.string(), z.number()])
@@ -33,10 +12,7 @@ const pricePerKgSchema = z
     const amount =
       typeof value === "number"
         ? value
-        : (parsePositiveNumber(String(value), false) ??
-          (toAsciiDigits(String(value)).replace(/[,\s٬]/g, "") === "0"
-            ? 0
-            : null));
+        : parseUnsignedNumber(String(value), { min: 0 });
 
     if (amount === null || amount < 0) {
       ctx.addIssue({
@@ -64,9 +40,12 @@ export const createBulkCoffeeSaleSchema = z.object({
     .trim()
     .min(1, "مقدار لازم است")
     .transform((value, ctx) => {
-      const amount = parsePositiveNumber(value, true);
+      const amount = parseUnsignedNumber(value, {
+        allowDecimal: true,
+        min: 0,
+      });
 
-      if (amount === null) {
+      if (amount === null || amount <= 0) {
         ctx.addIssue({
           code: "custom",
           message: "مقدار را درست وارد کنید",

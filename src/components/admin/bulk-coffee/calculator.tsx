@@ -2,20 +2,18 @@
 
 import { useActionState, useState } from "react";
 
+import { ChoicePills } from "@/components/admin/shared/choice-pills";
 import { Stack } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Field, Input } from "@/components/ui/field";
 import { createBulkCoffeeSaleAction } from "@/features/bulk-coffee/actions";
-import { quoteBulkCoffee, type BulkCoffeeUnit } from "@/lib/bulk-coffee/calc";
+import {
+  parseQuoteInput,
+  quoteBulkCoffee,
+  type BulkCoffeeUnit,
+} from "@/lib/bulk-coffee/calc";
 import { formatInteger, formatPrice } from "@/lib/format";
-import { toAsciiDigits } from "@/lib/prefactor/table";
 import type { BulkCoffeeTypeRecord } from "@/types/bulk-coffee";
-import { cn } from "@/utils/classMerge";
-
-function parseLiveValue(value: string) {
-  const amount = Number(toAsciiDigits(value).replace(/[,\s٬]/g, ""));
-  return Number.isFinite(amount) && amount > 0 ? amount : 0;
-}
 
 export function BulkCoffeeCalculator({
   types,
@@ -32,7 +30,7 @@ export function BulkCoffeeCalculator({
   const [value, setValue] = useState("");
   const selected = available.find((item) => item.id === typeId) ?? available[0];
   const quote = selected
-    ? quoteBulkCoffee(selected.pricePerKg, unit, parseLiveValue(value))
+    ? quoteBulkCoffee(selected.pricePerKg, unit, parseQuoteInput(value))
     : null;
 
   if (available.length === 0) {
@@ -57,18 +55,14 @@ export function BulkCoffeeCalculator({
         ) : null}
 
         <Field label="نوع قهوه">
-          <div className="flex flex-wrap gap-1.5">
-            {available.map((item) => (
-              <Button
-                key={item.id}
-                variant={item.id === selected?.id ? "primary" : "ghost"}
-                className="rounded-full px-2.5 py-1 text-[11px]"
-                onClick={() => setTypeId(item.id)}
-              >
-                {item.name}
-              </Button>
-            ))}
-          </div>
+          <ChoicePills
+            options={available.map((item) => ({
+              id: item.id,
+              label: item.name,
+            }))}
+            value={selected?.id ?? typeId}
+            onChange={setTypeId}
+          />
         </Field>
 
         {selected ? (
@@ -77,22 +71,14 @@ export function BulkCoffeeCalculator({
           </p>
         ) : null}
 
-        <div className="flex gap-1.5">
-          <Button
-            variant={unit === "grams" ? "primary" : "ghost"}
-            className={cn("flex-1")}
-            onClick={() => setUnit("grams")}
-          >
-            گرم
-          </Button>
-          <Button
-            variant={unit === "toman" ? "primary" : "ghost"}
-            className="flex-1"
-            onClick={() => setUnit("toman")}
-          >
-            تومن
-          </Button>
-        </div>
+        <ChoicePills
+          options={[
+            { id: "grams" as const, label: "گرم" },
+            { id: "toman" as const, label: "تومن" },
+          ]}
+          value={unit}
+          onChange={setUnit}
+        />
 
         <Field label={unit === "grams" ? "مقدار (گرم)" : "مبلغ (تومن)"}>
           <Input

@@ -1,6 +1,6 @@
 import { formatInteger } from "@/lib/format";
 import { formatPrefactorWeekday } from "@/lib/prefactor/range";
-import { cn } from "tailwind-variants";
+import { cn } from "@/utils/classMerge";
 
 function tomanLabel(value: number) {
   return `${formatInteger(value)} تومن`;
@@ -9,6 +9,7 @@ function tomanLabel(value: number) {
 export type WeekFlowDay = {
   ymd: string;
   income: number;
+  bulk: number;
   expense: number;
 };
 
@@ -19,7 +20,10 @@ export function WeekFlowChart({
   days: WeekFlowDay[];
   todayYmd: string;
 }) {
-  const peak = Math.max(1, ...days.flatMap((day) => [day.income, day.expense]));
+  const peak = Math.max(
+    1,
+    ...days.flatMap((day) => [day.income, day.bulk, day.expense]),
+  );
 
   return (
     <div className="rounded-(--radius) border border-foreground/15 p-4">
@@ -29,6 +33,10 @@ export function WeekFlowChart({
           <span className="inline-flex items-center gap-1.5">
             <span className="size-2 rounded-sm bg-foreground" />
             دخل
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="size-2 rounded-sm bg-bulk" />
+            فله
           </span>
           <span className="inline-flex items-center gap-1.5">
             <span className="size-2 rounded-sm bg-text/30" />
@@ -44,6 +52,10 @@ export function WeekFlowChart({
             day.income > 0 ? 8 : 0,
             (day.income / peak) * 100,
           );
+          const bulkHeight = Math.max(
+            day.bulk > 0 ? 8 : 0,
+            (day.bulk / peak) * 100,
+          );
           const expenseHeight = Math.max(
             day.expense > 0 ? 8 : 0,
             (day.expense / peak) * 100,
@@ -56,14 +68,21 @@ export function WeekFlowChart({
             >
               <div className="flex h-36 w-full items-end justify-center gap-0.5">
                 <div
-                  className="w-[42%] cursor-pointer rounded-t-sm bg-foreground"
+                  className="w-[30%] cursor-pointer rounded-t-sm bg-foreground"
                   style={{
                     height: `${incomeHeight ? incomeHeight : day.ymd <= todayYmd ? 2 : 0}%`,
                   }}
                   title={`دخل ${tomanLabel(day.income)}`}
                 />
                 <div
-                  className="w-[42%] cursor-pointer rounded-t-sm bg-text/30"
+                  className="w-[30%] cursor-pointer rounded-t-sm bg-bulk"
+                  style={{
+                    height: `${bulkHeight ? bulkHeight : day.ymd <= todayYmd ? 2 : 0}%`,
+                  }}
+                  title={`فله ${tomanLabel(day.bulk)}`}
+                />
+                <div
+                  className="w-[30%] cursor-pointer rounded-t-sm bg-text/30"
                   style={{
                     height: `${expenseHeight ? expenseHeight : day.ymd <= todayYmd ? 2 : 0}%`,
                   }}

@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 
-import { TableSeatedTime } from "@/components/admin/table-seated-time";
+import { TableSeatedTime } from "@/components/admin/tables/seated-time";
 import { Grid } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import {

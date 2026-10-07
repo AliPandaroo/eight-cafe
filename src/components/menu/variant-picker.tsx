@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { createPortal } from "react-dom";
 
 import { Flex, Stack } from "@/components/layout";
-import { addPrefactorItem } from "@/components/menu/prefactor-cart";
+import { addPrefactorItem } from "@/components/menu/prefactor/prefactor-cart";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/format";
 import type { MenuItemRecord } from "@/types/menu";

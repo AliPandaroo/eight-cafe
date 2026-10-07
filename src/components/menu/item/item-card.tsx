@@ -4,9 +4,9 @@ import { motion } from "framer-motion";
 import type { MouseEvent } from "react";
 
 import { Flex, Stack } from "@/components/layout";
-import { openMenuItem } from "@/components/menu/item-selection";
-import { ItemMedia } from "@/components/menu/item-media";
-import { addPrefactorItem } from "@/components/menu/prefactor-cart";
+import { openMenuItem } from "@/components/menu/item/item-selection";
+import { ItemMedia } from "@/components/menu/item/item-media";
+import { addPrefactorItem } from "@/components/menu/prefactor/prefactor-cart";
 import { VariantPicker } from "@/components/menu/variant-picker";
 import { useStaffRole } from "@/components/menu/staff-role";
 import { canBuildPrefactor } from "@/lib/auth/roles";

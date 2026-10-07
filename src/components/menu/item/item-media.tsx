@@ -15,7 +15,7 @@ export function ItemMedia({
 }) {
   const frame =
     variant === "detail"
-      ? "aspect-[4/3] w-full rounded-(--radius)"
+      ? "aspect-square w-full rounded-(--radius)"
       : "aspect-square w-full rounded-(--radius) ring-1 ring-foreground/15 md:ring-0";
 
   if (!src) {
@@ -30,11 +30,11 @@ export function ItemMedia({
         fill
         sizes={
           variant === "detail"
-            ? "(max-width: 767px) 100vw, 420px"
-            : "(max-width: 767px) 50vw, 280px"
+            ? "(max-width: 767px) calc(100vw - 4rem), 26rem"
+            : "(max-width: 767px) calc(50vw - 1.25rem), (max-width: 1088px) calc(50vw - 4rem), 31rem"
         }
         priority={priority}
-        className="object-cover"
+        className="object-cover object-center"
       />
     </div>
   );

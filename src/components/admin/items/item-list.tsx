@@ -3,13 +3,13 @@
 import Link from "next/link";
 import { useTransition, useSyncExternalStore } from "react";
 
-import { CategoryBadges } from "@/components/admin/category-badges";
+import { CategoryBadges } from "@/components/admin/categories/badges";
 import {
   getCategoryFilter,
   setCategoryFilter,
   subscribeCategoryFilter,
-} from "@/components/admin/category-filter";
-import { StatusBadge } from "@/components/admin/status-badge";
+} from "@/components/admin/categories/filter";
+import { StatusBadge } from "@/components/admin/shared/status-badge";
 import { Flex, Stack } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,6 +19,7 @@ import {
 } from "@/features/items/actions";
 import { formatPrice, formatPriceRange } from "@/lib/format";
 import type { CategoryRecord, MenuItemRecord } from "@/types/menu";
+import Image from "next/image";
 
 export function ItemList({
   items,
@@ -105,44 +106,61 @@ export function ItemList({
                   gap={3}
                   className="w-full"
                 >
-                  <Stack gap={1}>
-                    <p className="text-[11px] font-bold md:text-sm">
-                      {item.name}
-                    </p>
-                    <p className="text-[11px] text-text/70">
-                      {!selectedCategoryId ? (
-                        <>
-                          {category?.name ?? "بدون دسته"}{" "}
-                          <span className="mx-2 inline-block font-bold">
-                            ·
-                          </span>{" "}
-                        </>
-                      ) : null}
-                      {item.variants.length > 1
-                        ? formatPriceRange(
-                            String(
-                              Math.min(
-                                ...item.variants.map((variant) =>
-                                  Number(variant.price),
+                  <Flex align="start" gap={3} className="min-w-0">
+                    {item.imageUrl ? (
+                      <div className="hidden size-21 shrink-0 overflow-hidden rounded-(--radius) bg-foreground/10 ring-1 ring-foreground/15 md:block">
+                        <Image
+                          width={84}
+                          height={84}
+                          src={item.imageUrl}
+                          alt={item.name}
+                          className="object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div className="hidden size-21 shrink-0 overflow-hidden rounded-(--radius) bg-foreground/10 ring-1 ring-foreground/15 md:block">
+                        <div className="size-full animate-pulse bg-foreground/5 blur-sm delay-100 duration-300" />
+                      </div>
+                    )}
+                    <Stack gap={1} className="min-w-0">
+                      <p className="text-[11px] font-bold md:text-sm">
+                        {item.name}
+                      </p>
+                      <p className="text-[11px] text-text/70">
+                        {!selectedCategoryId ? (
+                          <>
+                            {category?.name ?? "بدون دسته"}{" "}
+                            <span className="mx-2 inline-block font-bold">
+                              ·
+                            </span>{" "}
+                          </>
+                        ) : null}
+                        {item.variants.length > 1
+                          ? formatPriceRange(
+                              String(
+                                Math.min(
+                                  ...item.variants.map((variant) =>
+                                    Number(variant.price),
+                                  ),
                                 ),
                               ),
-                            ),
-                            String(
-                              Math.max(
-                                ...item.variants.map((variant) =>
-                                  Number(variant.price),
+                              String(
+                                Math.max(
+                                  ...item.variants.map((variant) =>
+                                    Number(variant.price),
+                                  ),
                                 ),
                               ),
-                            ),
-                          )
-                        : formatPrice(item.price)}
-                    </p>
-                    <StatusBadge
-                      active={item.isAvailable}
-                      activeLabel="موجود"
-                      inactiveLabel="ناموجود"
-                    />
-                  </Stack>
+                            )
+                          : formatPrice(item.price)}
+                      </p>
+                      <StatusBadge
+                        active={item.isAvailable}
+                        activeLabel="موجود"
+                        inactiveLabel="ناموجود"
+                      />
+                    </Stack>
+                  </Flex>
                   <Flex
                     gap={2}
                     wrap="wrap"

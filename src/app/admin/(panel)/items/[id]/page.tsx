@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { requireManager } from "@/lib/admin/session";
-import { ItemForm } from "@/components/admin/item-form";
+import { ItemForm } from "@/components/admin/items/item-form";
 import { Stack } from "@/components/layout";
 import { listCategories } from "@/lib/menu/category";
 import { getMenuItem } from "@/lib/menu/item";

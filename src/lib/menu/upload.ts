@@ -2,7 +2,7 @@ import { mkdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
-const MAX_BYTES = 2 * 1024 * 1024;
+const MAX_BYTES = 4 * 1024 * 1024;
 const TYPES: Record<string, string> = {
   "image/jpeg": "jpg",
   "image/png": "png",
@@ -13,11 +13,11 @@ export async function saveMenuImage(file: File) {
   const extension = TYPES[file.type];
 
   if (!extension) {
-    return { ok: false as const, error: "Image must be JPG, PNG, or WebP" };
+    return { ok: false as const, error: "تصویر باید JPG، PNG یا WebP باشد" };
   }
 
   if (file.size > MAX_BYTES) {
-    return { ok: false as const, error: "Image must be 2MB or smaller" };
+    return { ok: false as const, error: "حجم تصویر حداکثر ۴ مگابایت است" };
   }
 
   await mkdir(UPLOAD_DIR, { recursive: true });

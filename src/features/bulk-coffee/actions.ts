@@ -1,8 +1,7 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-
-import { getStaffSession } from "@/lib/admin/session";
+import { rejectUnlessManager } from "@/lib/admin/guard";
+import { revalidatePaths } from "@/lib/admin/revalidate";
 import { quoteBulkCoffee } from "@/lib/bulk-coffee/calc";
 import {
   createBulkCoffeeSale,
@@ -19,26 +18,18 @@ import {
 } from "@/lib/validation/bulk-coffee";
 
 function refreshSales() {
-  revalidatePath("/admin/sales");
-  revalidatePath("/admin/ledger");
-  revalidatePath("/admin");
+  revalidatePaths("/admin/sales", "/admin/ledger", "/admin");
 }
 
-async function rejectUnlessManager() {
-  const session = await getStaffSession();
-
-  if (session?.role !== "manager") {
-    return fail("فقط مدیر می‌تواند فروش فله را ثبت کند");
-  }
-
-  return null;
+async function requireSalesManager() {
+  return rejectUnlessManager("فقط مدیر می‌تواند فروش فله را ثبت کند");
 }
 
 export async function saveBulkCoffeeTypeAction(
   _prev: unknown,
   formData: FormData,
 ) {
-  const denied = await rejectUnlessManager();
+  const denied = await requireSalesManager();
 
   if (denied) {
     return denied;
@@ -65,7 +56,7 @@ export async function saveBulkCoffeeTypeAction(
 }
 
 export async function deleteBulkCoffeeTypeAction(id: string) {
-  const denied = await rejectUnlessManager();
+  const denied = await requireSalesManager();
 
   if (denied) {
     return denied;
@@ -84,7 +75,7 @@ export async function createBulkCoffeeSaleAction(
   _prev: unknown,
   formData: FormData,
 ) {
-  const denied = await rejectUnlessManager();
+  const denied = await requireSalesManager();
 
   if (denied) {
     return denied;
@@ -138,7 +129,7 @@ export async function createBulkCoffeeSaleAction(
 }
 
 export async function deleteBulkCoffeeSaleAction(id: string) {
-  const denied = await rejectUnlessManager();
+  const denied = await requireSalesManager();
 
   if (denied) {
     return denied;

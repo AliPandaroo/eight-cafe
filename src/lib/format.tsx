@@ -13,6 +13,19 @@ export function formatInteger(value: number) {
   return integerFormat.format(value);
 }
 
+const kilogramFormat = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 1,
+  minimumFractionDigits: 0,
+});
+
+export function formatKilogramsFromGrams(grams: number) {
+  if (!Number.isFinite(grams) || grams <= 0) {
+    return "0";
+  }
+
+  return kilogramFormat.format(grams / 1000);
+}
+
 function formatAmount(price: string) {
   const amount = Number(price);
 

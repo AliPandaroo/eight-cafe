@@ -1,4 +1,4 @@
-import { PrefactorList } from "@/components/admin/prefactor-list";
+import { PrefactorList } from "@/components/admin/prefactors/prefactor-list";
 import { Stack } from "@/components/layout";
 import { requireStaff } from "@/lib/admin/session";
 import { currentDayRange, currentWeekRange } from "@/lib/prefactor/range";

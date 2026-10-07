@@ -1,8 +1,7 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-
-import { getStaffSession } from "@/lib/admin/session";
+import { rejectUnlessManager } from "@/lib/admin/guard";
+import { revalidatePaths } from "@/lib/admin/revalidate";
 import { updateRestaurantSettings } from "@/lib/db/restaurant";
 import { fail, ok } from "@/lib/menu/result";
 import { fieldErrorsFromZod } from "@/lib/menu/validation";
@@ -12,10 +11,12 @@ export async function updateRestaurantAction(
   _prev: unknown,
   formData: FormData,
 ) {
-  const session = await getStaffSession();
+  const denied = await rejectUnlessManager(
+    "فقط مدیر می‌تواند تنظیمات را ذخیره کند",
+  );
 
-  if (session?.role !== "manager") {
-    return fail("فقط مدیر می‌تواند تنظیمات را ذخیره کند");
+  if (denied) {
+    return denied;
   }
 
   const parsed = updateRestaurantSchema.safeParse({
@@ -43,9 +44,7 @@ export async function updateRestaurantAction(
       offerScope: parsed.data.offerScope,
       offerCategoryId: parsed.data.offerCategoryId ?? null,
     });
-    revalidatePath("/");
-    revalidatePath("/admin");
-    revalidatePath("/admin/settings");
+    revalidatePaths("/", "/admin", "/admin/settings");
     return ok(restaurant);
   } catch (error) {
     console.error(error);

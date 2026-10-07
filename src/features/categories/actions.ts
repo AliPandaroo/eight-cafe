@@ -1,8 +1,7 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-
-import { getStaffSession } from "@/lib/admin/session";
+import { rejectUnlessManager as denyUnlessManager } from "@/lib/admin/guard";
+import { revalidatePaths } from "@/lib/admin/revalidate";
 import {
   createCategory,
   deleteCategory,
@@ -10,23 +9,13 @@ import {
   moveCategory,
   updateCategory,
 } from "@/lib/menu/category";
-import { fail } from "@/lib/menu/result";
 
 async function rejectUnlessManager() {
-  const session = await getStaffSession();
-
-  if (session?.role !== "manager") {
-    return fail("فقط مدیر می‌تواند دسته‌ها را ویرایش کند");
-  }
-
-  return null;
+  return denyUnlessManager("فقط مدیر می‌تواند دسته‌ها را ویرایش کند");
 }
 
 function refreshCategoryPaths() {
-  revalidatePath("/");
-  revalidatePath("/admin");
-  revalidatePath("/admin/categories");
-  revalidatePath("/admin/items");
+  revalidatePaths("/", "/admin", "/admin/categories", "/admin/items");
 }
 
 export async function listCategoriesAction() {

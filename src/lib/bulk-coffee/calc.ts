@@ -1,4 +1,10 @@
+import { parseUnsignedNumber } from "@/lib/parse/number";
+
 export type BulkCoffeeUnit = "grams" | "toman";
+
+export function parseQuoteInput(value: string) {
+  return parseUnsignedNumber(value, { allowDecimal: true, min: 0.0001 }) ?? 0;
+}
 
 export function quoteBulkCoffee(
   pricePerKg: number,

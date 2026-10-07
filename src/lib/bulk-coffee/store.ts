@@ -342,3 +342,7 @@ export async function deleteBulkCoffeeSale(
 export function sumBulkCoffeeAmount(sales: BulkCoffeeSaleRecord[]) {
   return sales.reduce((sum, sale) => sum + (sale.amount || 0), 0);
 }
+
+export function sumBulkCoffeeGrams(sales: BulkCoffeeSaleRecord[]) {
+  return sales.reduce((sum, sale) => sum + (sale.grams || 0), 0);
+}

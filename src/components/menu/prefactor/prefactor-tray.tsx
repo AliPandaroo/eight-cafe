@@ -15,7 +15,7 @@ import {
   getPrefactorCartServerSnapshot,
   setPrefactorQuantity,
   subscribePrefactorCart,
-} from "@/components/menu/prefactor-cart";
+} from "@/components/menu/prefactor/prefactor-cart";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/field";
 import { createPrefactorAction } from "@/features/prefactor/actions";

@@ -14,15 +14,15 @@ import { ChartSpline, Receipt } from "lucide-react";
 
 import { Grid } from "@/components/layout";
 import { Logo } from "@/components/logo";
-import { CategoryNav } from "@/components/menu/category-nav";
+import { CategoryNav } from "@/components/menu/category/nav";
 import { IntroProgress } from "@/components/menu/intro-progress";
-import { ItemCard } from "@/components/menu/item-card";
-import { ItemDetail } from "@/components/menu/item-detail";
+import { ItemCard } from "@/components/menu/item/item-card";
+import { ItemDetail } from "@/components/menu/item/item-detail";
 import {
   getSelectedItemId,
   subscribeSelectedItemId,
-} from "@/components/menu/item-selection";
-import { PrefactorTray } from "@/components/menu/prefactor-tray";
+} from "@/components/menu/item/item-selection";
+import { PrefactorTray } from "@/components/menu/prefactor/prefactor-tray";
 import { StaffRoleContext } from "@/components/menu/staff-role";
 import { Button } from "@/components/ui/button";
 import {

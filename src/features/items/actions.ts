@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import {
@@ -16,25 +15,17 @@ import {
   removeLocalImage,
   saveMenuImage,
 } from "@/lib/menu/upload";
-import { getStaffSession } from "@/lib/admin/session";
+import { rejectUnlessManager as denyUnlessManager } from "@/lib/admin/guard";
+import { revalidatePaths } from "@/lib/admin/revalidate";
 import { fail } from "@/lib/menu/result";
 import { adminInputToPrice } from "@/lib/format";
 
 async function rejectUnlessManager() {
-  const session = await getStaffSession();
-
-  if (session?.role !== "manager") {
-    return fail("فقط مدیر می‌تواند منو را ویرایش کند");
-  }
-
-  return null;
+  return denyUnlessManager("فقط مدیر می‌تواند منو را ویرایش کند");
 }
 
 function refreshItemPaths() {
-  revalidatePath("/");
-  revalidatePath("/admin");
-  revalidatePath("/admin/items");
-  revalidatePath("/admin/categories");
+  revalidatePaths("/", "/admin", "/admin/items", "/admin/categories");
 }
 
 async function resolveImageUrl(formData: FormData, currentUrl?: string | null) {

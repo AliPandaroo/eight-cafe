@@ -11,7 +11,7 @@ import {
   moveCategoryAction,
   updateCategoryAction,
 } from "@/features/categories/actions";
-import { StatusBadge } from "@/components/admin/status-badge";
+import { StatusBadge } from "@/components/admin/shared/status-badge";
 import type { CategoryRecord } from "@/types/menu";
 import { PlusIcon } from "lucide-react";
 

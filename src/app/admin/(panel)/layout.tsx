@@ -1,4 +1,4 @@
-import { AdminNav } from "@/components/admin/admin-nav";
+import { AdminNav } from "@/components/admin/layout/admin-nav";
 import { Flex, Stack } from "@/components/layout";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,7 @@ export default async function AdminPanelLayout({
   const restaurant = await getRestaurant();
 
   return (
-    <Flex direction="col" className="min-h-[100dvh] md:flex-row" gap={6}>
+    <Flex direction="col" className="min-h-dvh md:flex-row" gap={6}>
       <aside className="border-b border-foreground/15 p-5 md:min-h-full md:w-56 md:border-b-0 md:border-l">
         <Stack gap={5}>
           <Stack gap={1}>

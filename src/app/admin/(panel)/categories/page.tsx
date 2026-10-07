@@ -1,6 +1,6 @@
 import { requireManager } from "@/lib/admin/session";
 import { Stack } from "@/components/layout";
-import { CategoryManager } from "@/components/admin/category-manager";
+import { CategoryManager } from "@/components/admin/categories/manager";
 import { listCategories } from "@/lib/menu/category";
 
 export default async function AdminCategoriesPage() {

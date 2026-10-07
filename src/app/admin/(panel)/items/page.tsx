@@ -1,6 +1,6 @@
 import { requireManager } from "@/lib/admin/session";
 import { Stack } from "@/components/layout";
-import { ItemList } from "@/components/admin/item-list";
+import { ItemList } from "@/components/admin/items/item-list";
 import { listCategories } from "@/lib/menu/category";
 import { listMenuItems } from "@/lib/menu/item";
 

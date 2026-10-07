@@ -1,4 +1,4 @@
-import { PrefactorDeliverButton } from "@/components/admin/prefactor-deliver-button";
+import { PrefactorDeliverButton } from "@/components/admin/prefactors/prefactor-deliver-button";
 import { Grid, Stack } from "@/components/layout";
 import { formatPrice } from "@/lib/format";
 import {

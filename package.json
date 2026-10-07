@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
+    "format:check": "prettier --check src prettier.config.mjs .github",
+    "ci": "npm run lint && npm run typecheck && npm run format:check && npm run build",
     "phase1:smoke": "tsx scripts/phase1-smoke.ts"
   },
   "dependencies": {

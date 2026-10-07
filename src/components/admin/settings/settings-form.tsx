@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 
-import { CategoryBadges } from "@/components/admin/category-badges";
+import { CategoryBadges } from "@/components/admin/categories/badges";
 import { Stack } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Field, Input } from "@/components/ui/field";

@@ -10,6 +10,7 @@
   /* Copy on accent fills (peach buttons) — colors.md #202020 */
   --ink: #202020;
   --text-disabled: #b5b3b5;
+  --bulk: #8d5a36;
   --radius: 6px;
 }
 
@@ -19,6 +20,7 @@
   --color-text: var(--text);
   --color-ink: var(--ink);
   --color-text-disabled: var(--text-disabled);
+  --color-bulk: var(--bulk);
   --radius-sm: var(--radius);
   --radius-md: var(--radius);
   --radius-lg: var(--radius);

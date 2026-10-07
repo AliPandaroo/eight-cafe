@@ -1,8 +1,8 @@
 import { headers } from "next/headers";
 
 import { requireManager } from "@/lib/admin/session";
-import { SettingsForm } from "@/components/admin/settings-form";
-import { SettingsQrCodes } from "@/components/admin/settings-qr-codes";
+import { SettingsForm } from "@/components/admin/settings/settings-form";
+import { SettingsQrCodes } from "@/components/admin/settings/settings-qr-codes";
 import { Stack } from "@/components/layout";
 import { getRestaurant } from "@/lib/db/restaurant";
 import { listCategories } from "@/lib/menu/category";

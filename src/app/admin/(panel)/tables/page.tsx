@@ -1,5 +1,5 @@
-import { TableBoard } from "@/components/admin/table-board";
-import { TableForm } from "@/components/admin/table-form";
+import { TableBoard } from "@/components/admin/tables/board";
+import { TableForm } from "@/components/admin/tables/form";
 import { Stack } from "@/components/layout";
 import { requireStaff } from "@/lib/admin/session";
 import { formatInteger } from "@/lib/format";

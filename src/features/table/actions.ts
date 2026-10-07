@@ -1,7 +1,7 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-
+import { rejectUnlessManager } from "@/lib/admin/guard";
+import { revalidatePaths } from "@/lib/admin/revalidate";
 import { getStaffSession } from "@/lib/admin/session";
 import { fail } from "@/lib/menu/result";
 import { fieldErrorsFromZod } from "@/lib/menu/validation";
@@ -14,18 +14,17 @@ import {
 import { createCafeTableSchema } from "@/lib/validation/table";
 
 function refreshTables() {
-  revalidatePath("/admin/tables");
-  revalidatePath("/admin");
+  revalidatePaths("/admin/tables", "/admin");
 }
 
 export async function createCafeTableAction(
   _prev: unknown,
   formData: FormData,
 ) {
-  const session = await getStaffSession();
+  const denied = await rejectUnlessManager("فقط مدیر می‌تواند میز اضافه کند");
 
-  if (session?.role !== "manager") {
-    return fail("فقط مدیر می‌تواند میز اضافه کند");
+  if (denied) {
+    return denied;
   }
 
   const parsed = createCafeTableSchema.safeParse({
@@ -78,10 +77,10 @@ export async function freeCafeTableAction(id: string) {
 }
 
 export async function deleteCafeTableAction(id: string) {
-  const session = await getStaffSession();
+  const denied = await rejectUnlessManager("فقط مدیر می‌تواند میز را حذف کند");
 
-  if (session?.role !== "manager") {
-    return fail("فقط مدیر می‌تواند میز را حذف کند");
+  if (denied) {
+    return denied;
   }
 
   const result = await deleteCafeTable(id);
