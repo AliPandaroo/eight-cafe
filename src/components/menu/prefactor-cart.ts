@@ -1,41 +1,46 @@
-import type { MenuItemRecord, MenuItemVariantRecord } from "@/types/menu"
+import type { MenuItemRecord, MenuItemVariantRecord } from "@/types/menu";
 
 export type PrefactorCartLine = {
-  itemId: string
-  variantId?: string
-  name: string
-  unitPrice: string
-  quantity: number
-}
+  itemId: string;
+  variantId?: string;
+  name: string;
+  unitPrice: string;
+  quantity: number;
+};
 
-type Listener = () => void
+type Listener = () => void;
 
-const listeners = new Set<Listener>()
-let lines: PrefactorCartLine[] = []
+const listeners = new Set<Listener>();
+const EMPTY_CART: PrefactorCartLine[] = [];
+let lines: PrefactorCartLine[] = EMPTY_CART;
 
 function notify() {
   for (const listener of listeners) {
-    listener()
+    listener();
   }
 }
 
 export function cartLineKey(itemId: string, variantId?: string) {
-  return variantId ? `${itemId}:${variantId}` : itemId
+  return variantId ? `${itemId}:${variantId}` : itemId;
 }
 
 function sameLine(line: PrefactorCartLine, itemId: string, variantId?: string) {
-  return line.itemId === itemId && (line.variantId ?? "") === (variantId ?? "")
+  return line.itemId === itemId && (line.variantId ?? "") === (variantId ?? "");
 }
 
 export function getPrefactorCart() {
-  return lines
+  return lines;
+}
+
+export function getPrefactorCartServerSnapshot() {
+  return EMPTY_CART;
 }
 
 export function subscribePrefactorCart(listener: Listener) {
-  listeners.add(listener)
+  listeners.add(listener);
   return () => {
-    listeners.delete(listener)
-  }
+    listeners.delete(listener);
+  };
 }
 
 export function addPrefactorItem(
@@ -43,20 +48,20 @@ export function addPrefactorItem(
   variant?: MenuItemVariantRecord,
 ) {
   if (!item.isAvailable) {
-    return
+    return;
   }
 
   if ((item.variants?.length ?? 0) > 0 && !variant) {
-    return
+    return;
   }
 
-  const unitPrice = variant?.price ?? item.price
-  const name = variant ? `${item.name} · ${variant.title}` : item.name
-  const current = lines.find((line) => sameLine(line, item.id, variant?.id))
+  const unitPrice = variant?.price ?? item.price;
+  const name = variant ? `${item.name} · ${variant.title}` : item.name;
+  const current = lines.find((line) => sameLine(line, item.id, variant?.id));
 
   if (current) {
-    current.quantity = Math.min(99, current.quantity + 1)
-    lines = [...lines]
+    current.quantity = Math.min(99, current.quantity + 1);
+    lines = [...lines];
   } else {
     lines = [
       ...lines,
@@ -67,10 +72,10 @@ export function addPrefactorItem(
         unitPrice,
         quantity: 1,
       },
-    ]
+    ];
   }
 
-  notify()
+  notify();
 }
 
 export function setPrefactorQuantity(
@@ -79,21 +84,21 @@ export function setPrefactorQuantity(
   variantId?: string,
 ) {
   if (quantity <= 0) {
-    lines = lines.filter((line) => !sameLine(line, itemId, variantId))
+    lines = lines.filter((line) => !sameLine(line, itemId, variantId));
   } else {
     lines = lines.map((line) =>
       sameLine(line, itemId, variantId)
         ? { ...line, quantity: Math.min(99, quantity) }
         : line,
-    )
+    );
   }
 
-  notify()
+  notify();
 }
 
 export function clearPrefactorCart() {
-  lines = []
-  notify()
+  lines = EMPTY_CART;
+  notify();
 }
 
 export function cartTotal(current = lines) {
@@ -104,5 +109,5 @@ export function cartTotal(current = lines) {
         0,
       ),
     ),
-  )
+  );
 }

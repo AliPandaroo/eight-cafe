@@ -1,8 +1,8 @@
-import type { Metadata } from "next"
-import { Vazirmatn } from "next/font/google"
-import localFont from "next/font/local"
+import type { Metadata } from "next";
+import { Vazirmatn } from "next/font/google";
+import localFont from "next/font/local";
 
-import "./globals.css"
+import "./globals.css";
 
 const dana = localFont({
   src: [
@@ -29,13 +29,13 @@ const dana = localFont({
   ],
   variable: "--font-dana",
   display: "swap",
-})
+});
 
 const vazirmatn = Vazirmatn({
   subsets: ["arabic", "latin"],
   variable: "--font-vazir",
   display: "swap",
-})
+});
 
 export const metadata: Metadata = {
   title: "منوآپ | Eight 8",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html
@@ -62,5 +62,5 @@ export default function RootLayout({
         {children}
       </body>
     </html>
-  )
+  );
 }

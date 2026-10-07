@@ -1,35 +1,35 @@
-import { createId, db, ensureSchema, nowIso } from "@/lib/db/client"
-import { parsePercent, type OfferScope } from "@/lib/pricing"
-import { RESTAURANT } from "@/lib/restaurant"
+import { createId, db, ensureSchema, nowIso } from "@/lib/db/client";
+import { parsePercent, type OfferScope } from "@/lib/pricing";
+import { RESTAURANT } from "@/lib/restaurant";
 
 export type RestaurantRecord = {
-  id: string
-  name: string
-  slug: string
-  profitPercent: number
-  offerPercent: number
-  offerScope: OfferScope
-  offerCategoryId: string | null
-  coffeePricePerKg: number
-  createdAt: string
-  updatedAt: string
-}
+  id: string;
+  name: string;
+  slug: string;
+  profitPercent: number;
+  offerPercent: number;
+  offerScope: OfferScope;
+  offerCategoryId: string | null;
+  coffeePricePerKg: number;
+  createdAt: string;
+  updatedAt: string;
+};
 
 type RestaurantRow = {
-  id: string
-  name: string
-  slug: string
-  profitPercent?: string | number | null
-  offerPercent?: string | number | null
-  offerScope?: string | null
-  offerCategoryId?: string | null
-  coffeePricePerKg?: string | number | null
-  createdAt: string
-  updatedAt: string
-}
+  id: string;
+  name: string;
+  slug: string;
+  profitPercent?: string | number | null;
+  offerPercent?: string | number | null;
+  offerScope?: string | null;
+  offerCategoryId?: string | null;
+  coffeePricePerKg?: string | number | null;
+  createdAt: string;
+  updatedAt: string;
+};
 
 function mapRestaurant(row: RestaurantRow): RestaurantRecord {
-  const offerScope = row.offerScope === "category" ? "category" : "all"
+  const offerScope = row.offerScope === "category" ? "category" : "all";
 
   return {
     id: row.id,
@@ -42,20 +42,20 @@ function mapRestaurant(row: RestaurantRow): RestaurantRecord {
     coffeePricePerKg: parsePercent(row.coffeePricePerKg),
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
-  }
+  };
 }
 
 export async function getRestaurant() {
-  await ensureSchema()
+  await ensureSchema();
 
   const existing = await db.execute({
     sql: `SELECT id, name, slug, profitPercent, offerPercent, offerScope, offerCategoryId, coffeePricePerKg, createdAt, updatedAt
           FROM Restaurant WHERE slug = ?`,
     args: [RESTAURANT.slug],
-  })
+  });
 
   if (existing.rows[0]) {
-    return mapRestaurant(existing.rows[0] as unknown as RestaurantRow)
+    return mapRestaurant(existing.rows[0] as unknown as RestaurantRow);
   }
 
   const restaurant: RestaurantRecord = {
@@ -69,7 +69,7 @@ export async function getRestaurant() {
     coffeePricePerKg: 0,
     createdAt: nowIso(),
     updatedAt: nowIso(),
-  }
+  };
 
   await db.execute({
     sql: `INSERT INTO Restaurant (
@@ -87,29 +87,29 @@ export async function getRestaurant() {
       restaurant.createdAt,
       restaurant.updatedAt,
     ],
-  })
+  });
 
-  return restaurant
+  return restaurant;
 }
 
 export async function updateRestaurantSettings(input: {
-  name: string
-  profitPercent: number
-  offerPercent: number
-  offerScope: OfferScope
-  offerCategoryId: string | null
-  coffeePricePerKg: number
+  name: string;
+  profitPercent: number;
+  offerPercent: number;
+  offerScope: OfferScope;
+  offerCategoryId: string | null;
+  coffeePricePerKg: number;
 }) {
-  const restaurant = await getRestaurant()
-  const nextName = input.name.trim()
+  const restaurant = await getRestaurant();
+  const nextName = input.name.trim();
 
   if (!nextName) {
-    return restaurant
+    return restaurant;
   }
 
   const offerCategoryId =
-    input.offerScope === "category" ? input.offerCategoryId : null
-  const updatedAt = nowIso()
+    input.offerScope === "category" ? input.offerCategoryId : null;
+  const updatedAt = nowIso();
 
   await db.execute({
     sql: `UPDATE Restaurant
@@ -125,7 +125,7 @@ export async function updateRestaurantSettings(input: {
       updatedAt,
       restaurant.id,
     ],
-  })
+  });
 
   return {
     ...restaurant,
@@ -136,5 +136,5 @@ export async function updateRestaurantSettings(input: {
     offerCategoryId,
     coffeePricePerKg: input.coffeePricePerKg,
     updatedAt,
-  }
+  };
 }

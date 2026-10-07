@@ -1,37 +1,37 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { createPortal } from "react-dom"
+import { motion } from "framer-motion";
+import { createPortal } from "react-dom";
 
-import { Flex, Stack } from "@/components/layout"
-import { addPrefactorItem } from "@/components/menu/prefactor-cart"
-import { Button } from "@/components/ui/button"
-import { formatPrice } from "@/lib/format"
-import type { MenuItemRecord } from "@/types/menu"
+import { Flex, Stack } from "@/components/layout";
+import { addPrefactorItem } from "@/components/menu/prefactor-cart";
+import { Button } from "@/components/ui/button";
+import { formatPrice } from "@/lib/format";
+import type { MenuItemRecord } from "@/types/menu";
 
 export function VariantPicker({
   item,
   onClose,
 }: {
-  item: MenuItemRecord
-  onClose: () => void
+  item: MenuItemRecord;
+  onClose: () => void;
 }) {
   return createPortal(
     <motion.div
-      className="fixed inset-0 z-[80] flex items-end justify-center p-4 md:items-center"
+      className="fixed inset-0 z-80 flex items-end justify-center p-4 md:items-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
     >
-      <button
-        type="button"
+      <Button
+        variant="ghost"
         className="absolute inset-0 bg-background/70"
         aria-label="بستن"
         onClick={onClose}
       />
       <motion.div
-        className="relative z-10 w-full max-w-sm rounded-[var(--radius)] bg-background p-4 shadow-lg ring-1 ring-foreground/15"
+        className="relative z-10 w-full max-w-sm rounded-(--radius) bg-background p-4 shadow-lg ring-1 ring-foreground/15"
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 16 }}
@@ -50,8 +50,8 @@ export function VariantPicker({
                 variant="ghost"
                 className="w-full justify-between px-3 py-2 text-sm"
                 onClick={() => {
-                  addPrefactorItem(item, variant)
-                  onClose()
+                  addPrefactorItem(item, variant);
+                  onClose();
                 }}
               >
                 <span>{variant.title}</span>
@@ -61,12 +61,17 @@ export function VariantPicker({
               </Button>
             ))}
           </Stack>
-          <Button type="button" variant="ghost" className="self-center md:self-start" onClick={onClose}>
+          <Button
+            type="button"
+            variant="ghost"
+            className="self-center md:self-start"
+            onClick={onClose}
+          >
             انصراف
           </Button>
         </Stack>
       </motion.div>
     </motion.div>,
     document.body,
-  )
+  );
 }

@@ -1,16 +1,16 @@
-import type { MenuItemRecord } from "@/types/menu"
+import type { MenuItemRecord } from "@/types/menu";
 
 const integerFormat = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
   minimumFractionDigits: 0,
-})
+});
 
 export function formatInteger(value: number) {
   if (!Number.isFinite(value)) {
-    return String(value)
+    return String(value);
   }
 
-  return integerFormat.format(value)
+  return integerFormat.format(value);
 }
 
 function formatAmount(price: string) {
@@ -25,25 +25,28 @@ function formatAmount(price: string) {
 
 export function formatMenuItemPrice(item: MenuItemRecord) {
   if (!item.isAvailable) {
-    return "ناموجود"
+    return "ناموجود";
   }
 
   if (item.priceMax && item.priceMax !== item.price) {
-    return formatPriceRange(item.price, item.priceMax)
+    return formatPriceRange(item.price, item.priceMax);
   }
 
-  return formatPrice(item.price, item.compareAtPrice)
+  return formatPrice(item.price, item.compareAtPrice);
 }
 
 export function formatPriceRange(minPrice: string, maxPrice: string) {
   return (
-    <span dir="ltr" className="inline-flex items-baseline gap-1 text-foreground">
+    <span
+      dir="ltr"
+      className="inline-flex items-baseline gap-1 text-foreground"
+    >
       <span className="text-xs">تومن</span>
       <span className="text-xl font-bold">{formatAmount(maxPrice)}</span>
       <span className="text-sm">—</span>
       <span className="text-xl font-bold">{formatAmount(minPrice)}</span>
     </span>
-  )
+  );
 }
 
 export function formatPrice(
@@ -60,7 +63,9 @@ export function formatPrice(
   return (
     <>
       {compare ? (
-        <span className="mr-1 text-xs text-text/45 line-through">{compare}</span>
+        <span className="mr-1 text-xs text-text/45 line-through">
+          {compare}
+        </span>
       ) : null}
       <span className={`${amountClass} text-xl font-bold`}>{amount}</span>{" "}
       <span className={`${amountClass} text-xs`}>تومن</span>

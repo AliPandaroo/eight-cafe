@@ -1,6 +1,6 @@
 export type ExpenseRecord = {
-  id: string
-  title: string
-  amount: string
-  createdAt: string
-}
+  id: string;
+  title: string;
+  amount: string;
+  createdAt: string;
+};

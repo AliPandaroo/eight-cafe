@@ -36,8 +36,8 @@ export function ItemCard({
   item,
   priority = false,
 }: {
-  item: MenuItemRecord
-  priority?: boolean
+  item: MenuItemRecord;
+  priority?: boolean;
 }) {
   const role = useStaffRole();
   const canOrder = canBuildPrefactor(role) && item.isAvailable;
@@ -64,14 +64,14 @@ export function ItemCard({
               variant="card"
               priority={priority}
             />
-            <Stack gap={1} className="min-w-0 text-center items-start">
-              <h3 className="text-[13px] font-bold text-text md:text-[14px] text-justify">
+            <Stack gap={1} className="min-w-0 items-start text-center">
+              <h3 className="text-justify text-[13px] font-bold text-text md:text-[14px]">
                 {item.name}
               </h3>
-              <p className="line-clamp-2 text-[11px] font-normal text-text/65 text-justify">
+              <p className="line-clamp-2 text-justify text-[11px] font-normal text-text/65">
                 {item.description ? item.description : "‌"}
               </p>
-              <p className="pt-1 text-[13px] self-end text-foreground">
+              <p className="self-end pt-1 text-[13px] text-foreground">
                 {formatMenuItemPrice(item)}
               </p>
             </Stack>
@@ -83,13 +83,13 @@ export function ItemCard({
           variant="ghost"
           className="mt-1 w-full py-1 text-[11px]"
           onClick={(event) => {
-            event.stopPropagation()
+            event.stopPropagation();
             if ((item.variants?.length ?? 0) > 0) {
-              setPicking(true)
-              return
+              setPicking(true);
+              return;
             }
 
-            addPrefactorItem(item)
+            addPrefactorItem(item);
           }}
         >
           افزودن

@@ -1,14 +1,14 @@
-import Link from "next/link"
+import Link from "next/link";
 
-import { requireManager } from "@/lib/admin/session"
-import { ItemForm } from "@/components/admin/item-form"
-import { Stack } from "@/components/layout"
-import { listCategories } from "@/lib/menu/category"
+import { requireManager } from "@/lib/admin/session";
+import { ItemForm } from "@/components/admin/item-form";
+import { Stack } from "@/components/layout";
+import { listCategories } from "@/lib/menu/category";
 
 export default async function NewMenuItemPage() {
-  await requireManager()
-  const categories = await listCategories()
-  const list = categories.ok ? categories.data : []
+  await requireManager();
+  const categories = await listCategories();
+  const list = categories.ok ? categories.data : [];
 
   return (
     <Stack gap={6} className="max-w-xl">
@@ -26,5 +26,5 @@ export default async function NewMenuItemPage() {
         <ItemForm categories={list} />
       )}
     </Stack>
-  )
+  );
 }

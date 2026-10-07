@@ -1,4 +1,4 @@
-import { tv } from "@/utils/tv"
+import { tv } from "@/utils/tv";
 
 /** Tailwind spacing tokens shared across layout components. */
 export const gapScale = {
@@ -14,7 +14,7 @@ export const gapScale = {
   8: "gap-8",
   10: "gap-10",
   12: "gap-12",
-} as const
+} as const;
 
 export const gapXScale = {
   none: "gap-x-0",
@@ -29,7 +29,7 @@ export const gapXScale = {
   8: "gap-x-8",
   10: "gap-x-10",
   12: "gap-x-12",
-} as const
+} as const;
 
 export const gapYScale = {
   none: "gap-y-0",
@@ -44,9 +44,9 @@ export const gapYScale = {
   8: "gap-y-8",
   10: "gap-y-10",
   12: "gap-y-12",
-} as const
+} as const;
 
-export type GapToken = keyof typeof gapScale
+export type GapToken = keyof typeof gapScale;
 
 export const alignScale = {
   start: "items-start",
@@ -54,7 +54,7 @@ export const alignScale = {
   end: "items-end",
   stretch: "items-stretch",
   baseline: "items-baseline",
-} as const
+} as const;
 
 export const justifyScale = {
   start: "justify-start",
@@ -63,20 +63,20 @@ export const justifyScale = {
   between: "justify-between",
   around: "justify-around",
   evenly: "justify-evenly",
-} as const
+} as const;
 
 export const directionScale = {
   row: "flex-row",
   col: "flex-col",
   rowReverse: "flex-row-reverse",
   colReverse: "flex-col-reverse",
-} as const
+} as const;
 
 export const wrapScale = {
   wrap: "flex-wrap",
   nowrap: "flex-nowrap",
   wrapReverse: "flex-wrap-reverse",
-} as const
+} as const;
 
 export const widthScale = {
   auto: "w-auto",
@@ -87,7 +87,7 @@ export const widthScale = {
   maxXl: "max-w-xl",
   max2xl: "max-w-2xl",
   max3xl: "max-w-3xl",
-} as const
+} as const;
 
 export const gridColsScale = {
   1: "grid-cols-1",
@@ -96,14 +96,14 @@ export const gridColsScale = {
   4: "grid-cols-4",
   6: "grid-cols-6",
   12: "grid-cols-12",
-} as const
+} as const;
 
 export type ColSpan =
-  1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | "full" | "auto"
+  1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | "full" | "auto";
 
-export type ColOffset = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
+export type ColOffset = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
-export const GRID_COLUMNS = 12
+export const GRID_COLUMNS = 12;
 
 export const breakpointPrefix = {
   sm: "sm:",
@@ -111,9 +111,9 @@ export const breakpointPrefix = {
   lg: "lg:",
   xl: "xl:",
   xxl: "2xl:",
-} as const
+} as const;
 
-export type LayoutBreakpoint = keyof typeof breakpointPrefix
+export type LayoutBreakpoint = keyof typeof breakpointPrefix;
 
 export const colSpanClassMap: Record<ColSpan, string> = {
   1: "col-span-1",
@@ -130,35 +130,35 @@ export const colSpanClassMap: Record<ColSpan, string> = {
   12: "col-span-12",
   full: "col-span-full",
   auto: "col-span-auto",
-}
+};
 
 export type ColLayoutProps = {
-  span?: ColSpan
-  offset?: ColOffset
-  offsetEnd?: ColOffset
-  sm?: ColSpan
-  smOffset?: ColOffset
-  smOffsetEnd?: ColOffset
-  md?: ColSpan
-  mdOffset?: ColOffset
-  mdOffsetEnd?: ColOffset
-  lg?: ColSpan
-  lgOffset?: ColOffset
-  lgOffsetEnd?: ColOffset
-  xl?: ColSpan
-  xlOffset?: ColOffset
-  xlOffsetEnd?: ColOffset
-  xxl?: ColSpan
-  xxlOffset?: ColOffset
-  xxlOffsetEnd?: ColOffset
-}
+  span?: ColSpan;
+  offset?: ColOffset;
+  offsetEnd?: ColOffset;
+  sm?: ColSpan;
+  smOffset?: ColOffset;
+  smOffsetEnd?: ColOffset;
+  md?: ColSpan;
+  mdOffset?: ColOffset;
+  mdOffsetEnd?: ColOffset;
+  lg?: ColSpan;
+  lgOffset?: ColOffset;
+  lgOffsetEnd?: ColOffset;
+  xl?: ColSpan;
+  xlOffset?: ColOffset;
+  xlOffsetEnd?: ColOffset;
+  xxl?: ColSpan;
+  xxlOffset?: ColOffset;
+  xxlOffsetEnd?: ColOffset;
+};
 
 export const boxVariants = tv({
   base: "",
   variants: {
     w: widthScale,
   },
-})
+});
 
 export const flexVariants = tv({
   base: "flex",
@@ -179,7 +179,7 @@ export const flexVariants = tv({
     justify: "start",
     gap: "none",
   },
-})
+});
 
 export const rowVariants = tv({
   base: "grid w-full grid-cols-12",
@@ -192,7 +192,7 @@ export const rowVariants = tv({
     align: "stretch",
     justify: "start",
   },
-})
+});
 
 export const gridVariants = tv({
   base: "grid",
@@ -204,4 +204,4 @@ export const gridVariants = tv({
   defaultVariants: {
     gap: "none",
   },
-})
+});

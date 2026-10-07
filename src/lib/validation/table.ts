@@ -1,6 +1,6 @@
-import { z } from "zod"
+import { z } from "zod";
 
-import { parseTableNumber } from "@/lib/prefactor/table"
+import { parseTableNumber } from "@/lib/prefactor/table";
 
 export const createCafeTableSchema = z.object({
   number: z
@@ -8,16 +8,16 @@ export const createCafeTableSchema = z.object({
     .trim()
     .min(1, "شماره میز لازم است")
     .transform((value, ctx) => {
-      const table = parseTableNumber(value)
+      const table = parseTableNumber(value);
 
       if (table === null || table < 1) {
         ctx.addIssue({
           code: "custom",
           message: "شماره میز از ۱ تا ۹۹۹",
-        })
-        return z.NEVER
+        });
+        return z.NEVER;
       }
 
-      return table
+      return table;
     }),
-})
+});

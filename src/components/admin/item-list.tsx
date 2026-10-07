@@ -65,7 +65,7 @@ export function ItemList({
               <Flex
                 key={item.id}
                 gap={3}
-                className="rounded-(--radius) border border-foreground/15 p-3 w-full"
+                className="w-full rounded-(--radius) border border-foreground/15 p-3"
               >
                 {selectedCategoryId ? (
                   <Flex gap={1}>
@@ -79,7 +79,7 @@ export function ItemList({
                       }
                       className="relative cursor-pointer"
                     >
-                      <span className="text-2xl absolute top-[9%] inset-0 h-fit m-auto">
+                      <span className="absolute inset-0 top-[9%] m-auto h-fit text-2xl">
                         ↑
                       </span>
                     </Button>
@@ -93,7 +93,7 @@ export function ItemList({
                       }
                       className="relative cursor-pointer"
                     >
-                      <span className="text-2xl absolute top-[9%] inset-0 h-fit m-auto">
+                      <span className="absolute inset-0 top-[9%] m-auto h-fit text-2xl">
                         ↓
                       </span>
                     </Button>
@@ -106,12 +106,14 @@ export function ItemList({
                   className="w-full"
                 >
                   <Stack gap={1}>
-                    <p className="md:text-sm text-[11px] font-bold">{item.name}</p>
+                    <p className="text-[11px] font-bold md:text-sm">
+                      {item.name}
+                    </p>
                     <p className="text-[11px] text-text/70">
                       {!selectedCategoryId ? (
                         <>
                           {category?.name ?? "بدون دسته"}{" "}
-                          <span className="inline-block mx-2 font-bold">
+                          <span className="mx-2 inline-block font-bold">
                             ·
                           </span>{" "}
                         </>
@@ -145,7 +147,7 @@ export function ItemList({
                     gap={2}
                     wrap="wrap"
                     justify="between"
-                    className="max-w-[7.4rem] md:max-w-[8.4rem] self-end"
+                    className="max-w-[7.4rem] self-end md:max-w-[8.4rem]"
                   >
                     <Button asChild variant="ghost">
                       <Link href={`/admin/items/${item.id}`}>ویرایش</Link>

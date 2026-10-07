@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { useActionState } from "react"
+import { useActionState } from "react";
 
-import { Stack } from "@/components/layout"
-import { Button } from "@/components/ui/button"
-import { Field, Input } from "@/components/ui/field"
-import { createExpenseAction } from "@/features/expense/actions"
+import { Stack } from "@/components/layout";
+import { Button } from "@/components/ui/button";
+import { Field, Input } from "@/components/ui/field";
+import { createExpenseAction } from "@/features/expense/actions";
 
 export function ExpenseForm() {
-  const [state, action, pending] = useActionState(createExpenseAction, null)
+  const [state, action, pending] = useActionState(createExpenseAction, null);
 
   return (
     <form key={state && state.ok ? state.data.id : "form"} action={action}>
@@ -29,16 +29,12 @@ export function ExpenseForm() {
             state && !state.ok ? state.fieldErrors?.amount?.[0] : undefined
           }
         >
-          <Input
-            name="amount"
-            inputMode="numeric"
-            required
-          />
+          <Input name="amount" inputMode="numeric" required />
         </Field>
         <Button type="submit" disabled={pending} className="self-start">
           {pending ? "در حال ثبت..." : "ثبت هزینه"}
         </Button>
       </Stack>
     </form>
-  )
+  );
 }

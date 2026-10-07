@@ -1,44 +1,41 @@
-"use client"
+"use client";
 
-import { useRef } from "react"
-import { useQRCode } from "next-qrcode"
+import { useRef } from "react";
+import { useQRCode } from "next-qrcode";
 
-import { Grid, Stack } from "@/components/layout"
-import { Button } from "@/components/ui/button"
+import { Grid, Stack } from "@/components/layout";
+import { Button } from "@/components/ui/button";
 
-function QrCard({
-  title,
-  href,
-}: {
-  title: string
-  href: string
-}) {
-  const { Canvas } = useQRCode()
-  const frameRef = useRef<HTMLDivElement>(null)
+function QrCard({ title, href }: { title: string; href: string }) {
+  const { Canvas } = useQRCode();
+  const frameRef = useRef<HTMLDivElement>(null);
 
   function download() {
-    const canvas = frameRef.current?.querySelector("canvas")
+    const canvas = frameRef.current?.querySelector("canvas");
 
     if (!canvas) {
-      return
+      return;
     }
 
-    const link = document.createElement("a")
-    link.href = canvas.toDataURL("image/png")
-    link.download = `${title}.png`
-    link.click()
+    const link = document.createElement("a");
+    link.href = canvas.toDataURL("image/png");
+    link.download = `${title}.png`;
+    link.click();
   }
 
   return (
-    <div className="rounded-[var(--radius)] border border-foreground/15 p-3">
+    <div className="rounded-(--radius) border border-foreground/15 p-3">
       <Stack gap={2}>
         <p className="text-sm">{title}</p>
-        <p className="break-all text-[10px] text-text/55 box-content line-clamp-1" dir="ltr">
+        <p
+          className="box-content line-clamp-1 text-[10px] break-all text-text/55"
+          dir="ltr"
+        >
           {href}
         </p>
         <div
           ref={frameRef}
-          className="overflow-hidden rounded-[var(--radius)] bg-white p-2 mx-auto mt-4"
+          className="mx-auto mt-4 overflow-hidden rounded-(--radius) bg-white p-2"
         >
           <Canvas
             text={href}
@@ -63,12 +60,12 @@ function QrCard({
         </Button>
       </Stack>
     </div>
-  )
+  );
 }
 
 export function SettingsQrCodes({ origin }: { origin: string }) {
   if (!origin) {
-    return null
+    return null;
   }
 
   const codes = [
@@ -79,13 +76,16 @@ export function SettingsQrCodes({ origin }: { origin: string }) {
       title: "لوکیشن",
       href: "https://neshan.org/maps/places/QbWDrXYBJeX_#c37.287-49.575-16z-0p",
     },
-  ]
+  ];
 
   return (
-    <Stack gap={3} className="border border-foreground/15 rounded-[var(--radius)] p-3 max-w-5xl">
+    <Stack
+      gap={3}
+      className="max-w-5xl rounded-(--radius) border border-foreground/15 p-3"
+    >
       <Stack gap={1}>
         <h2 className="text-sm font-semibold">کد QR</h2>
-        <p className="text-xs text-text/70 text-justify">
+        <p className="text-justify text-xs text-text/70">
           این کدها منقضی نمی‌شوند. روی میز یا در ورودی چاپ کنید.
         </p>
       </Stack>
@@ -95,5 +95,5 @@ export function SettingsQrCodes({ origin }: { origin: string }) {
         ))}
       </Grid>
     </Stack>
-  )
+  );
 }

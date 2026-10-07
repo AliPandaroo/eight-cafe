@@ -1,15 +1,15 @@
-import type { ComponentProps } from "react"
-import { Slot } from "@radix-ui/react-slot"
-import type { VariantProps } from "tailwind-variants"
+import type { ComponentProps } from "react";
+import { Slot } from "@radix-ui/react-slot";
+import type { VariantProps } from "tailwind-variants";
 
-import { cn } from "@/utils/classMerge"
+import { cn } from "@/utils/classMerge";
 
-import { flexVariants } from "./core/config"
+import { flexVariants } from "./core/config";
 
 export type FlexProps = ComponentProps<"div"> &
   VariantProps<typeof flexVariants> & {
-    asChild?: boolean
-  }
+    asChild?: boolean;
+  };
 
 export function Flex({
   className,
@@ -23,7 +23,7 @@ export function Flex({
   w,
   ...props
 }: FlexProps) {
-  const Comp = asChild ? Slot : "div"
+  const Comp = asChild ? Slot : "div";
 
   return (
     <Comp
@@ -33,7 +33,7 @@ export function Flex({
       )}
       {...props}
     />
-  )
+  );
 }
 
-export { flexVariants }
+export { flexVariants };

@@ -10,26 +10,26 @@ import {
   type ColSpan,
   type GapToken,
   type LayoutBreakpoint,
-} from "./config"
+} from "./config";
 
 function withBreakpoint(prefix: string | undefined, className: string) {
   if (!prefix) {
-    return className
+    return className;
   }
 
-  return `${prefix}${className}`
+  return `${prefix}${className}`;
 }
 
 function colStartClass(offset: ColOffset, prefix?: string) {
-  return withBreakpoint(prefix, `col-start-${offset + 1}`)
+  return withBreakpoint(prefix, `col-start-${offset + 1}`);
 }
 
 function colEndClass(offsetEnd: ColOffset, prefix?: string) {
-  return withBreakpoint(prefix, `col-end-${GRID_COLUMNS + 1 - offsetEnd}`)
+  return withBreakpoint(prefix, `col-end-${GRID_COLUMNS + 1 - offsetEnd}`);
 }
 
 function colSpanClass(span: ColSpan, prefix?: string) {
-  return withBreakpoint(prefix, colSpanClassMap[span])
+  return withBreakpoint(prefix, colSpanClassMap[span]);
 }
 
 export function buildColLayoutClasses({
@@ -52,14 +52,14 @@ export function buildColLayoutClasses({
   xxlOffset,
   xxlOffsetEnd,
 }: ColLayoutProps) {
-  const classes: string[] = [colSpanClass(span)]
+  const classes: string[] = [colSpanClass(span)];
 
   if (offset !== undefined) {
-    classes.push(colStartClass(offset))
+    classes.push(colStartClass(offset));
   }
 
   if (offsetEnd !== undefined) {
-    classes.push(colEndClass(offsetEnd))
+    classes.push(colEndClass(offsetEnd));
   }
 
   const responsiveRules: Array<
@@ -75,7 +75,7 @@ export function buildColLayoutClasses({
     ["lg", lg, lgOffset, lgOffsetEnd],
     ["xl", xl, xlOffset, xlOffsetEnd],
     ["xxl", xxl, xxlOffset, xxlOffsetEnd],
-  ]
+  ];
 
   for (const [
     breakpoint,
@@ -83,22 +83,22 @@ export function buildColLayoutClasses({
     responsiveOffset,
     responsiveOffsetEnd,
   ] of responsiveRules) {
-    const prefix = breakpoint ? breakpointPrefix[breakpoint] : undefined
+    const prefix = breakpoint ? breakpointPrefix[breakpoint] : undefined;
 
     if (responsiveSpan !== undefined) {
-      classes.push(colSpanClass(responsiveSpan, prefix))
+      classes.push(colSpanClass(responsiveSpan, prefix));
     }
 
     if (responsiveOffset !== undefined) {
-      classes.push(colStartClass(responsiveOffset, prefix))
+      classes.push(colStartClass(responsiveOffset, prefix));
     }
 
     if (responsiveOffsetEnd !== undefined) {
-      classes.push(colEndClass(responsiveOffsetEnd, prefix))
+      classes.push(colEndClass(responsiveOffsetEnd, prefix));
     }
   }
 
-  return classes
+  return classes;
 }
 
 export function resolveRowGutterClasses({
@@ -106,27 +106,27 @@ export function resolveRowGutterClasses({
   gutterX,
   gutterY,
 }: {
-  gutter?: GapToken | [GapToken, GapToken]
-  gutterX?: GapToken
-  gutterY?: GapToken
+  gutter?: GapToken | [GapToken, GapToken];
+  gutterX?: GapToken;
+  gutterY?: GapToken;
 }) {
   if (Array.isArray(gutter)) {
-    return [gapXScale[gutter[0]], gapYScale[gutter[1]]]
+    return [gapXScale[gutter[0]], gapYScale[gutter[1]]];
   }
 
-  const classes: string[] = []
+  const classes: string[] = [];
 
   if (gutter !== undefined) {
-    classes.push(gapScale[gutter])
+    classes.push(gapScale[gutter]);
   }
 
   if (gutterX !== undefined) {
-    classes.push(gapXScale[gutterX])
+    classes.push(gapXScale[gutterX]);
   }
 
   if (gutterY !== undefined) {
-    classes.push(gapYScale[gutterY])
+    classes.push(gapYScale[gutterY]);
   }
 
-  return classes
+  return classes;
 }

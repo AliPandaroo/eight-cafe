@@ -1,18 +1,18 @@
-import { cn } from "@/utils/classMerge"
+import { cn } from "@/utils/classMerge";
 
 export function StatusBadge({
   active,
   activeLabel,
   inactiveLabel,
 }: {
-  active: boolean
-  activeLabel: string
-  inactiveLabel: string
+  active: boolean;
+  activeLabel: string;
+  inactiveLabel: string;
 }) {
   return (
     <span
       className={cn(
-        "inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] whitespace-nowrap border border-text-disabled/50 text-text-disabled",
+        "inline-flex w-fit items-center gap-1.5 rounded-full border border-text-disabled/50 px-2.5 py-1 text-[11px] whitespace-nowrap text-text-disabled",
       )}
     >
       <span
@@ -23,5 +23,5 @@ export function StatusBadge({
       />
       {active ? activeLabel : inactiveLabel}
     </span>
-  )
+  );
 }

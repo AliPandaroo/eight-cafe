@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import { useActionState, useState } from "react"
+import { useActionState, useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Field, Input } from "@/components/ui/field"
-import { loginAdminAction } from "@/features/admin/auth-actions"
-import { Stack } from "@/components/layout"
-import type { StaffRole } from "@/lib/auth/roles"
+import { Button } from "@/components/ui/button";
+import { Field, Input } from "@/components/ui/field";
+import { loginAdminAction } from "@/features/admin/auth-actions";
+import { Stack } from "@/components/layout";
+import type { StaffRole } from "@/lib/auth/roles";
 
 export function LoginForm({
   defaultRole = "manager",
 }: {
-  defaultRole?: StaffRole
+  defaultRole?: StaffRole;
 }) {
-  const [state, action, pending] = useActionState(loginAdminAction, null)
-  const [role, setRole] = useState<StaffRole>(defaultRole)
+  const [state, action, pending] = useActionState(loginAdminAction, null);
+  const [role, setRole] = useState<StaffRole>(defaultRole);
 
   return (
     <form action={action}>
@@ -54,5 +54,5 @@ export function LoginForm({
         </Button>
       </Stack>
     </form>
-  )
+  );
 }

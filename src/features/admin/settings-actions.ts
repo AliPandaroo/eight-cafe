@@ -1,21 +1,21 @@
-"use server"
+"use server";
 
-import { revalidatePath } from "next/cache"
+import { revalidatePath } from "next/cache";
 
-import { getStaffSession } from "@/lib/admin/session"
-import { updateRestaurantSettings } from "@/lib/db/restaurant"
-import { fail, ok } from "@/lib/menu/result"
-import { fieldErrorsFromZod } from "@/lib/menu/validation"
-import { updateRestaurantSchema } from "@/lib/validation/restaurant"
+import { getStaffSession } from "@/lib/admin/session";
+import { updateRestaurantSettings } from "@/lib/db/restaurant";
+import { fail, ok } from "@/lib/menu/result";
+import { fieldErrorsFromZod } from "@/lib/menu/validation";
+import { updateRestaurantSchema } from "@/lib/validation/restaurant";
 
 export async function updateRestaurantAction(
   _prev: unknown,
   formData: FormData,
 ) {
-  const session = await getStaffSession()
+  const session = await getStaffSession();
 
   if (session?.role !== "manager") {
-    return fail("فقط مدیر می‌تواند تنظیمات را ذخیره کند")
+    return fail("فقط مدیر می‌تواند تنظیمات را ذخیره کند");
   }
 
   const parsed = updateRestaurantSchema.safeParse({
@@ -25,10 +25,13 @@ export async function updateRestaurantAction(
     offerPercent: formData.get("offerPercent"),
     offerScope: formData.get("offerScope"),
     offerCategoryId: String(formData.get("offerCategoryId") ?? "") || undefined,
-  })
+  });
 
   if (!parsed.success) {
-    return fail("اطلاعات رستوران نامعتبر است", fieldErrorsFromZod(parsed.error))
+    return fail(
+      "اطلاعات رستوران نامعتبر است",
+      fieldErrorsFromZod(parsed.error),
+    );
   }
 
   try {
@@ -39,13 +42,13 @@ export async function updateRestaurantAction(
       offerPercent: parsed.data.offerPercent,
       offerScope: parsed.data.offerScope,
       offerCategoryId: parsed.data.offerCategoryId ?? null,
-    })
-    revalidatePath("/")
-    revalidatePath("/admin")
-    revalidatePath("/admin/settings")
-    return ok(restaurant)
+    });
+    revalidatePath("/");
+    revalidatePath("/admin");
+    revalidatePath("/admin/settings");
+    return ok(restaurant);
   } catch (error) {
-    console.error(error)
-    return fail("ذخیره تنظیمات ممکن نشد")
+    console.error(error);
+    return fail("ذخیره تنظیمات ممکن نشد");
   }
 }

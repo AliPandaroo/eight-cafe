@@ -16,13 +16,13 @@ export function WeekFlowChart({
   days,
   todayYmd,
 }: {
-  days: WeekFlowDay[]
-  todayYmd: string
+  days: WeekFlowDay[];
+  todayYmd: string;
 }) {
   const peak = Math.max(1, ...days.flatMap((day) => [day.income, day.expense]));
 
   return (
-    <div className="rounded-[var(--radius)] border border-foreground/15 p-4">
+    <div className="rounded-(--radius) border border-foreground/15 p-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-sm font-semibold">دخل و خرج این هفته</h2>
         <div className="flex gap-3 text-[11px] text-text/70">
@@ -56,14 +56,14 @@ export function WeekFlowChart({
             >
               <div className="flex h-36 w-full items-end justify-center gap-0.5">
                 <div
-                  className="w-[42%] rounded-t-sm bg-foreground cursor-pointer"
+                  className="w-[42%] cursor-pointer rounded-t-sm bg-foreground"
                   style={{
                     height: `${incomeHeight ? incomeHeight : day.ymd <= todayYmd ? 2 : 0}%`,
                   }}
                   title={`دخل ${tomanLabel(day.income)}`}
                 />
                 <div
-                  className="w-[42%] rounded-t-sm bg-text/30 cursor-pointer"
+                  className="w-[42%] cursor-pointer rounded-t-sm bg-text/30"
                   style={{
                     height: `${expenseHeight ? expenseHeight : day.ymd <= todayYmd ? 2 : 0}%`,
                   }}

@@ -31,7 +31,14 @@ function handleClose(event: MouseEvent<HTMLAnchorElement>) {
   closeMenuItem();
 }
 
-export function ItemDetail({ item }: { item: MenuItemRecord }) {
+export function ItemDetail({
+  item,
+  coffeeOnly = false,
+}: {
+  item: MenuItemRecord;
+  coffeeOnly?: boolean;
+}) {
+  const closeHref = coffeeOnly ? "/?coffee=1" : "/";
   const role = useStaffRole();
   const canOrder = canBuildPrefactor(role) && item.isAvailable;
   const [picking, setPicking] = useState(false);
@@ -55,13 +62,13 @@ export function ItemDetail({ item }: { item: MenuItemRecord }) {
       transition={{ duration: 0.2 }}
     >
       <Link
-        href="/"
+        href={closeHref}
         onClick={handleClose}
         className="absolute inset-0 bg-background/70"
         aria-label="بستن"
       />
       <motion.div
-        className="relative z-10 w-full max-w-md rounded-[var(--radius)] bg-background p-4 shadow-lg ring-1 ring-foreground/15"
+        className="relative z-10 w-full max-w-md rounded-(--radius) bg-background p-4 shadow-lg ring-1 ring-foreground/15"
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 16 }}
@@ -92,11 +99,11 @@ export function ItemDetail({ item }: { item: MenuItemRecord }) {
                 className="self-start"
                 onClick={() => {
                   if ((item.variants?.length ?? 0) > 0) {
-                    setPicking(true)
-                    return
+                    setPicking(true);
+                    return;
                   }
 
-                  addPrefactorItem(item)
+                  addPrefactorItem(item);
                 }}
               >
                 افزودن
@@ -104,7 +111,7 @@ export function ItemDetail({ item }: { item: MenuItemRecord }) {
             ) : null}
           </Stack>
           <Button asChild variant="ghost" className="self-center md:self-start">
-            <Link href="/" onClick={handleClose}>
+            <Link href={closeHref} onClick={handleClose}>
               بستن
             </Link>
           </Button>

@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS MenuItemVariant (
   itemId TEXT NOT NULL,
   title TEXT NOT NULL,
   price TEXT NOT NULL,
+  coffeeGrams TEXT NOT NULL DEFAULT '0',
   sortOrder INTEGER NOT NULL DEFAULT 0,
   createdAt TEXT NOT NULL,
   updatedAt TEXT NOT NULL,
@@ -108,4 +109,33 @@ CREATE TABLE IF NOT EXISTS CafeTable (
 
 CREATE INDEX IF NOT EXISTS CafeTable_number
   ON CafeTable (number);
-`
+
+CREATE TABLE IF NOT EXISTS BulkCoffeeType (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  pricePerKg TEXT NOT NULL DEFAULT '0',
+  isActive INTEGER NOT NULL DEFAULT 1,
+  sortOrder INTEGER NOT NULL DEFAULT 0,
+  createdAt TEXT NOT NULL,
+  updatedAt TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS BulkCoffeeType_sortOrder
+  ON BulkCoffeeType (sortOrder);
+
+CREATE TABLE IF NOT EXISTS BulkCoffeeSale (
+  id TEXT PRIMARY KEY,
+  typeId TEXT,
+  typeName TEXT NOT NULL,
+  unit TEXT NOT NULL,
+  inputValue TEXT NOT NULL,
+  grams TEXT NOT NULL,
+  amount TEXT NOT NULL,
+  pricePerKg TEXT NOT NULL,
+  createdAt TEXT NOT NULL,
+  FOREIGN KEY (typeId) REFERENCES BulkCoffeeType(id) ON DELETE SET NULL
+);
+
+CREATE INDEX IF NOT EXISTS BulkCoffeeSale_createdAt
+  ON BulkCoffeeSale (createdAt);
+`;

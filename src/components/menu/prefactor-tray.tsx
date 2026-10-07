@@ -12,6 +12,7 @@ import {
   cartTotal,
   clearPrefactorCart,
   getPrefactorCart,
+  getPrefactorCartServerSnapshot,
   setPrefactorQuantity,
   subscribePrefactorCart,
 } from "@/components/menu/prefactor-cart";
@@ -26,7 +27,7 @@ export function PrefactorTray() {
   const lines = useSyncExternalStore(
     subscribePrefactorCart,
     getPrefactorCart,
-    () => [],
+    getPrefactorCartServerSnapshot,
   );
   const [tableLabel, setTableLabel] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -75,7 +76,7 @@ export function PrefactorTray() {
   }
 
   return (
-    <div className="fixed inset-x-0 pb-20 md:pb-3 bottom-0 z-40 border-t border-foreground/15 bg-background/75 px-4 pt-3 backdrop-blur-sm">
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-foreground/15 bg-background/75 px-4 pt-3 pb-20 backdrop-blur-sm md:pb-3">
       <Stack gap={2} className="mx-auto max-w-xl">
         {lines.length > 0 ? (
           <p className="text-[11px] text-text/60">پیش‌فاکتور</p>
@@ -91,7 +92,7 @@ export function PrefactorTray() {
             <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
-                className="p-0.5 flex justify-center items-center"
+                className="flex items-center justify-center p-0.5"
                 onClick={() =>
                   setPrefactorQuantity(
                     line.itemId,
@@ -102,12 +103,12 @@ export function PrefactorTray() {
               >
                 <MinusIcon className="size-4.5 text-foreground!" />
               </Button>
-              <span className="font-bold min-w-5 inline-block text-center">
+              <span className="inline-block min-w-5 text-center font-bold">
                 {line.quantity}
               </span>
               <Button
                 variant="ghost"
-                className="p-0.5 flex justify-center items-center"
+                className="flex items-center justify-center p-0.5"
                 onClick={() =>
                   setPrefactorQuantity(
                     line.itemId,
@@ -145,7 +146,7 @@ export function PrefactorTray() {
         {error ? <p className="text-[11px] text-red-200">{error}</p> : null}
         {saved ? (
           // after delay, clear the saved state
-          <p className="text-[11px] text-text/75 text-center mx-auto">
+          <p className="mx-auto text-center text-[11px] text-text/75">
             پیش‌فاکتور ثبت شد.
           </p>
         ) : null}

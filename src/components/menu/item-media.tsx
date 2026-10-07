@@ -16,7 +16,7 @@ export function ItemMedia({
   const frame =
     variant === "detail"
       ? "aspect-[4/3] w-full rounded-(--radius)"
-      : "aspect-square w-full rounded-(--radius) ring-1 ring-foreground/15 md:ring-0"
+      : "aspect-square w-full rounded-(--radius) ring-1 ring-foreground/15 md:ring-0";
 
   if (!src) {
     return <div className={cn("bg-foreground/10", frame)} aria-hidden />;

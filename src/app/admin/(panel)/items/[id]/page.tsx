@@ -1,26 +1,26 @@
-import Link from "next/link"
-import { notFound } from "next/navigation"
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
-import { requireManager } from "@/lib/admin/session"
-import { ItemForm } from "@/components/admin/item-form"
-import { Stack } from "@/components/layout"
-import { listCategories } from "@/lib/menu/category"
-import { getMenuItem } from "@/lib/menu/item"
+import { requireManager } from "@/lib/admin/session";
+import { ItemForm } from "@/components/admin/item-form";
+import { Stack } from "@/components/layout";
+import { listCategories } from "@/lib/menu/category";
+import { getMenuItem } from "@/lib/menu/item";
 
 export default async function EditMenuItemPage({
   params,
 }: {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }) {
-  await requireManager()
-  const { id } = await params
+  await requireManager();
+  const { id } = await params;
   const [item, categories] = await Promise.all([
     getMenuItem(id),
     listCategories(),
-  ])
+  ]);
 
   if (!item.ok) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -36,5 +36,5 @@ export default async function EditMenuItemPage({
         categories={categories.ok ? categories.data : []}
       />
     </Stack>
-  )
+  );
 }

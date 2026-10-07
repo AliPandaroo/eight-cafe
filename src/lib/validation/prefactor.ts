@@ -1,6 +1,6 @@
-import { z } from "zod"
+import { z } from "zod";
 
-import { parseTableNumber } from "@/lib/prefactor/table"
+import { parseTableNumber } from "@/lib/prefactor/table";
 
 export const createPrefactorSchema = z.object({
   tableLabel: z
@@ -8,17 +8,17 @@ export const createPrefactorSchema = z.object({
     .trim()
     .min(1, "شماره میز لازم است")
     .transform((value, ctx) => {
-      const table = parseTableNumber(value)
+      const table = parseTableNumber(value);
 
       if (table === null) {
         ctx.addIssue({
           code: "custom",
           message: "شماره میز را وارد کنید؛ ۰ یعنی بیرون‌بر",
-        })
-        return z.NEVER
+        });
+        return z.NEVER;
       }
 
-      return String(table)
+      return String(table);
     }),
   lines: z
     .array(
@@ -29,4 +29,4 @@ export const createPrefactorSchema = z.object({
       }),
     )
     .min(1, "حداقل یک آیتم لازم است"),
-})
+});

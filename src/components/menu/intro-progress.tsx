@@ -14,7 +14,7 @@ export function IntroProgress({ progress }: { progress: MotionValue<number> }) {
     >
       <div className="absolute inset-0 bg-foreground/12" />
       <motion.span
-        className="absolute top-1/2 z-1 font-medium tabular-nums tracking-wide text-foreground md:text-[128px] text-[56px]"
+        className="absolute top-1/2 z-1 text-[56px] font-medium tracking-wide text-foreground tabular-nums md:text-[128px]"
         style={{
           left,
           x: "-8%",

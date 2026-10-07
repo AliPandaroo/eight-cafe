@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { useActionState } from "react"
+import { useActionState } from "react";
 
-import { Stack } from "@/components/layout"
-import { Button } from "@/components/ui/button"
-import { Field, Input } from "@/components/ui/field"
-import { createCafeTableAction } from "@/features/table/actions"
+import { Stack } from "@/components/layout";
+import { Button } from "@/components/ui/button";
+import { Field, Input } from "@/components/ui/field";
+import { createCafeTableAction } from "@/features/table/actions";
 
 export function TableForm() {
-  const [state, action, pending] = useActionState(createCafeTableAction, null)
+  const [state, action, pending] = useActionState(createCafeTableAction, null);
 
   return (
     <form key={state && state.ok ? state.data.id : "form"} action={action}>
@@ -21,16 +21,17 @@ export function TableForm() {
               : undefined
           }
         >
-          <Input
-            name="number"
-            inputMode="numeric"
-            required
-          />
+          <Input name="number" inputMode="numeric" required />
         </Field>
-        <Button variant="primary" type="submit" disabled={pending} className="shrink-0">
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={pending}
+          className="shrink-0"
+        >
           {pending ? "..." : "افزودن میز"}
         </Button>
       </Stack>
     </form>
-  )
+  );
 }

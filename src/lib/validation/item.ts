@@ -47,6 +47,7 @@ const variantSchema = z.object({
   id: z.string().min(1).optional(),
   title: z.string().trim().min(1, "عنوان سایز لازم است").max(80),
   price: priceSchema,
+  coffeeGrams: gramsSchema,
 });
 
 export const createMenuItemSchema = z.object({

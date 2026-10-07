@@ -90,6 +90,7 @@ export async function saveMenuItemAction(_prev: unknown, formData: FormData) {
   const hasVariants = formData.get("hasVariants") === "true";
   const titles = formData.getAll("variantTitle").map(String);
   const prices = formData.getAll("variantPrice").map(String);
+  const grams = formData.getAll("variantCoffeeGrams").map(String);
   const ids = formData.getAll("variantId").map(String);
   const variants = hasVariants
     ? titles
@@ -97,6 +98,7 @@ export async function saveMenuItemAction(_prev: unknown, formData: FormData) {
           id: ids[index] || undefined,
           title: title.trim(),
           price: adminInputToPrice(prices[index] ?? ""),
+          coffeeGrams: grams[index] ?? "",
         }))
         .filter((variant) => variant.title)
     : [];
@@ -114,7 +116,14 @@ export async function saveMenuItemAction(_prev: unknown, formData: FormData) {
     name: String(formData.get("name") ?? ""),
     description: String(formData.get("description") ?? ""),
     price: basePrice,
-    coffeeGrams: String(formData.get("coffeeGrams") ?? ""),
+    coffeeGrams: hasVariants
+      ? String(
+          Math.max(
+            0,
+            ...variants.map((variant) => Number(variant.coffeeGrams) || 0),
+          ),
+        )
+      : String(formData.get("coffeeGrams") ?? ""),
     imageUrl: image.url,
     isAvailable: formData.get("isAvailable") === "true",
     variants,

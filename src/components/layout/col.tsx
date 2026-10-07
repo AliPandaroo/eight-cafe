@@ -1,19 +1,19 @@
-import type { ComponentProps } from "react"
-import { Slot } from "@radix-ui/react-slot"
+import type { ComponentProps } from "react";
+import { Slot } from "@radix-ui/react-slot";
 
-import { cn } from "@/utils/classMerge"
+import { cn } from "@/utils/classMerge";
 
 import {
   type ColLayoutProps,
   type ColOffset,
   type ColSpan,
-} from "./core/config"
-import { buildColLayoutClasses } from "./core/utils"
+} from "./core/config";
+import { buildColLayoutClasses } from "./core/utils";
 
 export type ColProps = ComponentProps<"div"> &
   ColLayoutProps & {
-    asChild?: boolean
-  }
+    asChild?: boolean;
+  };
 
 /** Grid column inside `<Row>` — span, offset, and responsive sizes. */
 export function Col({
@@ -39,7 +39,7 @@ export function Col({
   xxlOffsetEnd,
   ...props
 }: ColProps) {
-  const Comp = asChild ? Slot : "div"
+  const Comp = asChild ? Slot : "div";
 
   return (
     <Comp
@@ -68,7 +68,7 @@ export function Col({
       )}
       {...props}
     />
-  )
+  );
 }
 
-export type { ColLayoutProps, ColOffset, ColSpan }
+export type { ColLayoutProps, ColOffset, ColSpan };

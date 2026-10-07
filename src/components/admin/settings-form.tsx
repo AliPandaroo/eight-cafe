@@ -37,7 +37,10 @@ export function SettingsForm({
       <input type="hidden" name="name" value={name} />
       <input type="hidden" name="offerScope" value={scope} />
       <input type="hidden" name="offerCategoryId" value={categoryId} />
-      <Stack gap={4} className="border border-foreground/15 rounded-[var(--radius)] p-3">
+      <Stack
+        gap={4}
+        className="rounded-(--radius) border border-foreground/15 p-3"
+      >
         <Field
           label="نام رستوران"
           error={
@@ -63,9 +66,8 @@ export function SettingsForm({
             defaultValue={
               coffeePricePerKg > 0 ? formatInteger(coffeePricePerKg) : ""
             }
-            placeholder="مثلاً 5,000,000"
           />
-          <p className="mt-1 text-[10px] md:text-xs text-text/55">
+          <p className="mt-1 text-[10px] text-text/55 md:text-xs">
             هزینه قهوه هر آیتم + قیمت پایه + سود - تخفیف.
           </p>
         </Field>
@@ -88,7 +90,7 @@ export function SettingsForm({
 
         <Stack
           gap={4}
-          className="border border-foreground/15 rounded-[var(--radius)] p-3"
+          className="rounded-(--radius) border border-foreground/15 p-3"
         >
           <Field
             label="آفر / تخفیف (٪)"
@@ -144,7 +146,12 @@ export function SettingsForm({
         {state?.ok ? (
           <p className="text-sm text-text/80">تنظیمات ذخیره شد.</p>
         ) : null}
-        <Button variant="primary" type="submit" disabled={pending} className="self-start">
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={pending}
+          className="self-start"
+        >
           {pending ? "در حال ذخیره..." : "ذخیره"}
         </Button>
       </Stack>

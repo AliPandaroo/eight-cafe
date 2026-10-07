@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button"
-import type { CategoryRecord } from "@/types/menu"
+import { Button } from "@/components/ui/button";
+import type { CategoryRecord } from "@/types/menu";
 
 export function CategoryBadges({
   categories,
@@ -7,10 +7,10 @@ export function CategoryBadges({
   onChange,
   allowAll = false,
 }: {
-  categories: CategoryRecord[]
-  value: string
-  onChange: (id: string) => void
-  allowAll?: boolean
+  categories: CategoryRecord[];
+  value: string;
+  onChange: (id: string) => void;
+  allowAll?: boolean;
 }) {
   return (
     <div className="flex flex-wrap gap-1.5">
@@ -30,7 +30,7 @@ export function CategoryBadges({
         />
       ))}
     </div>
-  )
+  );
 }
 
 function CategoryBadge({
@@ -38,9 +38,9 @@ function CategoryBadge({
   active,
   onClick,
 }: {
-  label: string
-  active: boolean
-  onClick: () => void
+  label: string;
+  active: boolean;
+  onClick: () => void;
 }) {
   return (
     <Button
@@ -50,5 +50,5 @@ function CategoryBadge({
     >
       {label}
     </Button>
-  )
+  );
 }

@@ -12,11 +12,11 @@ npm run dev
 
 `DATABASE_URL` پیش‌فرض فایل SQLite در `data/dev.db` است. اسکیما در اولین استفاده ساخته می‌شود.
 
-| متغیر | نقش |
-| --- | --- |
-| `DATABASE_URL` | اتصال دیتابیس (لوکال: `file:./data/dev.db`) |
-| `MANAGER_PASSWORD` / `ADMIN_PASSWORD` | ورود مدیر (پیش‌فرض `eight`) |
-| `WAITER_PASSWORD` | ورود گارسون (پیش‌فرض `waiter`) |
+| متغیر                                 | نقش                                         |
+| ------------------------------------- | ------------------------------------------- |
+| `DATABASE_URL`                        | اتصال دیتابیس (لوکال: `file:./data/dev.db`) |
+| `MANAGER_PASSWORD` / `ADMIN_PASSWORD` | ورود مدیر (پیش‌فرض `eight`)                 |
+| `WAITER_PASSWORD`                     | ورود گارسون (پیش‌فرض `waiter`)              |
 
 ورود: `/admin/login` — مدیر به داشبورد می‌رود، گارسون به پیش‌فاکتورهای امروز.
 

@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 
-import { Center, Stack } from "@/components/layout"
-import { BrandMark } from "@/components/menu/brand-mark"
+import { Center, Stack } from "@/components/layout";
+import { BrandMark } from "@/components/menu/brand-mark";
 
 export function Splash({ name }: { name: string }) {
   return (
@@ -17,7 +17,7 @@ export function Splash({ name }: { name: string }) {
           <BrandMark size="lg" />
         </motion.div>
         <motion.h1
-          className="font-brand text-center text-[18px] font-normal text-text"
+          className="text-center font-brand text-[18px] font-normal text-text"
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.08, ease: "easeOut" }}
@@ -34,5 +34,5 @@ export function Splash({ name }: { name: string }) {
         </motion.p>
       </Stack>
     </Center>
-  )
+  );
 }

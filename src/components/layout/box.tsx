@@ -1,18 +1,18 @@
-import type { ComponentProps } from "react"
-import { Slot } from "@radix-ui/react-slot"
-import type { VariantProps } from "tailwind-variants"
+import type { ComponentProps } from "react";
+import { Slot } from "@radix-ui/react-slot";
+import type { VariantProps } from "tailwind-variants";
 
-import { cn } from "@/utils/classMerge"
+import { cn } from "@/utils/classMerge";
 
-import { boxVariants } from "./core/config"
+import { boxVariants } from "./core/config";
 
 export type BoxProps = ComponentProps<"div"> &
   VariantProps<typeof boxVariants> & {
-    asChild?: boolean
-  }
+    asChild?: boolean;
+  };
 
 export function Box({ className, asChild, w, ...props }: BoxProps) {
-  const Comp = asChild ? Slot : "div"
+  const Comp = asChild ? Slot : "div";
 
-  return <Comp className={cn(boxVariants({ w }), className)} {...props} />
+  return <Comp className={cn(boxVariants({ w }), className)} {...props} />;
 }

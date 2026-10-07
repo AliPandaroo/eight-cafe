@@ -1,23 +1,23 @@
-import { PrefactorDeliverButton } from "@/components/admin/prefactor-deliver-button"
-import { Grid, Stack } from "@/components/layout"
-import { formatPrice } from "@/lib/format"
+import { PrefactorDeliverButton } from "@/components/admin/prefactor-deliver-button";
+import { Grid, Stack } from "@/components/layout";
+import { formatPrice } from "@/lib/format";
 import {
   formatPrefactorTime,
   formatPrefactorWeekday,
   prefactorDayKey,
-} from "@/lib/prefactor/range"
-import { formatTableLabel } from "@/lib/prefactor/table"
-import { cn } from "@/utils/classMerge"
-import type { PrefactorRecord } from "@/types/prefactor"
+} from "@/lib/prefactor/range";
+import { formatTableLabel } from "@/lib/prefactor/table";
+import { cn } from "@/utils/classMerge";
+import type { PrefactorRecord } from "@/types/prefactor";
 
 function groupByTehranDay(prefactors: PrefactorRecord[]) {
-  const groups = new Map<string, PrefactorRecord[]>()
+  const groups = new Map<string, PrefactorRecord[]>();
 
   for (const prefactor of prefactors) {
-    const key = prefactorDayKey(prefactor.createdAt)
-    const day = groups.get(key) ?? []
-    day.push(prefactor)
-    groups.set(key, day)
+    const key = prefactorDayKey(prefactor.createdAt);
+    const day = groups.get(key) ?? [];
+    day.push(prefactor);
+    groups.set(key, day);
   }
 
   return [...groups.entries()]
@@ -30,7 +30,7 @@ function groupByTehranDay(prefactors: PrefactorRecord[]) {
           new Date(left.createdAt).getTime() -
           new Date(right.createdAt).getTime(),
       ),
-    }))
+    }));
 }
 
 function PrefactorDayHeading({ label }: { label: string }) {
@@ -39,7 +39,7 @@ function PrefactorDayHeading({ label }: { label: string }) {
       <span className="shrink-0 text-sm text-text/80">{label}</span>
       <span className="h-px min-w-0 flex-1 bg-foreground/15" aria-hidden />
     </div>
-  )
+  );
 }
 
 function PrefactorCards({ prefactors }: { prefactors: PrefactorRecord[] }) {
@@ -54,7 +54,7 @@ function PrefactorCards({ prefactors }: { prefactors: PrefactorRecord[] }) {
         <article
           key={prefactor.id}
           className={cn(
-            "flex h-full min-w-0 flex-col rounded-[var(--radius)] border border-foreground/15 p-3 transition-opacity",
+            "flex h-full min-w-0 flex-col rounded-(--radius) border border-foreground/15 p-3 transition-opacity",
             prefactor.isDelivered && "opacity-40 hover:opacity-80",
           )}
         >
@@ -80,7 +80,7 @@ function PrefactorCards({ prefactors }: { prefactors: PrefactorRecord[] }) {
         </article>
       ))}
     </Grid>
-  )
+  );
 }
 
 export function PrefactorList({
@@ -88,16 +88,16 @@ export function PrefactorList({
   emptyLabel,
   groupByDay = false,
 }: {
-  prefactors: PrefactorRecord[]
-  emptyLabel: string
-  groupByDay?: boolean
+  prefactors: PrefactorRecord[];
+  emptyLabel: string;
+  groupByDay?: boolean;
 }) {
   if (prefactors.length === 0) {
-    return <p className="text-sm text-text/70">{emptyLabel}</p>
+    return <p className="text-sm text-text/70">{emptyLabel}</p>;
   }
 
   if (!groupByDay) {
-    return <PrefactorCards prefactors={prefactors} />
+    return <PrefactorCards prefactors={prefactors} />;
   }
 
   return (
@@ -109,5 +109,5 @@ export function PrefactorList({
         </Stack>
       ))}
     </Stack>
-  )
+  );
 }

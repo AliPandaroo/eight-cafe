@@ -15,11 +15,16 @@ import {
   weekDayYmds,
 } from "@/lib/prefactor/range";
 import { listPrefactors, sumPrefactorIncome } from "@/lib/prefactor/store";
+import {
+  listBulkCoffeeSales,
+  sumBulkCoffeeAmount,
+} from "@/lib/bulk-coffee/store";
 import { listCafeTables } from "@/lib/table/store";
 import { MoneyStat } from "@/components/admin/money-stat";
 
 const shortcuts = [
   { href: "/", label: "ساخت سفارش" },
+  { href: "/admin/sales", label: "فروش فله" },
   { href: "/admin/items/new", label: "آیتم جدید" },
   { href: "/admin/settings", label: "تنظیمات" },
 ];
@@ -27,15 +32,23 @@ const shortcuts = [
 export default async function AdminDashboardPage() {
   await requireManager();
   const week = currentWeekRange();
-  const [categories, items, income, prefators, expenses, cafeTables] =
-    await Promise.all([
-      listCategories(),
-      listMenuItems(),
-      sumPrefactorIncome(week),
-      listPrefactors(week),
-      listExpenses(week),
-      listCafeTables(),
-    ]);
+  const [
+    categories,
+    items,
+    income,
+    prefators,
+    expenses,
+    cafeTables,
+    bulkSales,
+  ] = await Promise.all([
+    listCategories(),
+    listMenuItems(),
+    sumPrefactorIncome(week),
+    listPrefactors(week),
+    listExpenses(week),
+    listCafeTables(),
+    listBulkCoffeeSales(week),
+  ]);
 
   const categoryCount = categories.ok ? categories.data.length : 0;
   const itemList = items.ok ? items.data : [];
@@ -43,7 +56,10 @@ export default async function AdminDashboardPage() {
   const unavailableItems = itemList.filter((item) => !item.isAvailable);
   const weekPrefactors = prefators.ok ? prefators.data : [];
   const weekExpenses = expenses.ok ? expenses.data : [];
-  const incomeTotal = income.ok ? Number(income.data.total) : 0;
+  const weekBulkSales = bulkSales.ok ? bulkSales.data : [];
+  const incomeTotal =
+    (income.ok ? Number(income.data.total) : 0) +
+    sumBulkCoffeeAmount(weekBulkSales);
   const expenseTotal = sumExpenseAmount(weekExpenses);
   const orderCount = income.ok ? income.data.count : 0;
   const pendingCount = weekPrefactors.filter(
@@ -63,6 +79,11 @@ export default async function AdminDashboardPage() {
     );
   }
 
+  for (const sale of weekBulkSales) {
+    const key = prefactorDayKey(sale.createdAt);
+    incomeByDay.set(key, (incomeByDay.get(key) ?? 0) + (sale.amount || 0));
+  }
+
   for (const expense of weekExpenses) {
     const key = prefactorDayKey(expense.createdAt);
     expenseByDay.set(
@@ -80,8 +101,8 @@ export default async function AdminDashboardPage() {
   return (
     <Stack gap={8} className="w-full">
       <Stack gap={1}>
-        <h1 className="text-lg md:text-xl font-semibold">داشبورد</h1>
-        <p className="text-xs md:text-sm text-text/70 text-justify">
+        <h1 className="text-lg font-semibold md:text-xl">داشبورد</h1>
+        <p className="text-justify text-xs text-text/70 md:text-sm">
           خلاصه این هفته و میانبر کارهای پرتکرار مدیر.
         </p>
       </Stack>
@@ -91,7 +112,7 @@ export default async function AdminDashboardPage() {
           <Link
             key={shortcut.href}
             href={shortcut.href}
-            className="rounded-[var(--radius)] border border-foreground/15 px-3 py-3 text-sm text-text/85"
+            className="rounded-(--radius) border border-foreground/15 px-3 py-3 text-sm text-text/85"
           >
             {shortcut.label}
           </Link>
@@ -104,10 +125,7 @@ export default async function AdminDashboardPage() {
           value={incomeTotal}
         />
         <MoneyStat label="خرج هفته" value={expenseTotal} />
-        <MoneyStat
-          label="بازگشت سرمایه"
-          value={incomeTotal - expenseTotal}
-        />
+        <MoneyStat label="بازگشت سرمایه" value={incomeTotal - expenseTotal} />
       </Grid>
 
       <WeekFlowChart days={days} todayYmd={tehranTodayYmd()} />
@@ -125,7 +143,7 @@ export default async function AdminDashboardPage() {
                 <Link
                   key={table.id}
                   href="/admin/tables"
-                  className="rounded-full bg-text-disabled/20 px-2.5 py-1 text-[11px] text-white whitespace-nowrap hover:bg-text-disabled/60 transition-colors"
+                  className="rounded-full bg-text-disabled/20 px-2.5 py-1 text-[11px] whitespace-nowrap text-white transition-colors hover:bg-text-disabled/60"
                 >
                   {table.number}
                 </Link>
@@ -140,7 +158,7 @@ export default async function AdminDashboardPage() {
                 <Link
                   key={item.id}
                   href={`/admin/items/${item.id}`}
-                  className="rounded-full bg-text-disabled/20 px-2.5 py-1 text-[11px] text-white whitespace-nowrap hover:bg-text-disabled/60 transition-colors"
+                  className="rounded-full bg-text-disabled/20 px-2.5 py-1 text-[11px] whitespace-nowrap text-white transition-colors hover:bg-text-disabled/60"
                 >
                   {item.name}
                 </Link>
@@ -173,12 +191,13 @@ function Stat({
   children?: React.ReactNode;
 }) {
   return (
-    <Flex direction="col" className="rounded-[var(--radius)] border border-foreground/15 p-4">
+    <Flex
+      direction="col"
+      className="rounded-(--radius) border border-foreground/15 p-4"
+    >
       <p className="text-[11px] text-text/70">{label}</p>
       <p className="mt-2 text-2xl font-semibold">{value}</p>
-      <div className="mr-auto w-fit mt-auto">{children}</div>
+      <div className="mt-auto mr-auto w-fit">{children}</div>
     </Flex>
   );
 }
-
-

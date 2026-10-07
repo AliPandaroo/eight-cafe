@@ -1,12 +1,18 @@
-import { Center } from "@/components/layout"
-import { MenuView } from "@/components/menu/menu-view"
-import { getPublicRole } from "@/lib/admin/session"
-import { getPublicMenu } from "@/lib/menu/public"
+import { Center } from "@/components/layout";
+import { MenuView } from "@/components/menu/menu-view";
+import { getPublicRole } from "@/lib/admin/session";
+import { getPublicMenu } from "@/lib/menu/public";
 
-export const dynamic = "force-dynamic"
+export const dynamic = "force-dynamic";
 
-export default async function Home() {
-  const menu = await getPublicMenu()
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ coffee?: string }>;
+}) {
+  const { coffee } = await searchParams;
+  const coffeeOnly = coffee === "1";
+  const menu = await getPublicMenu({ coffeeOnly });
 
   if (!menu.ok) {
     return (
@@ -15,8 +21,14 @@ export default async function Home() {
           بارگذاری منو ممکن نشد. دوباره تلاش کنید.
         </p>
       </Center>
-    )
+    );
   }
 
-  return <MenuView menu={menu.data} role={await getPublicRole()} />
+  return (
+    <MenuView
+      menu={menu.data}
+      role={await getPublicRole()}
+      coffeeOnly={coffeeOnly}
+    />
+  );
 }

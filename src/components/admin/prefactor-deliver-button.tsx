@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
-import { useTransition } from "react"
+import { useTransition } from "react";
 
-import { Button } from "@/components/ui/button"
-import { markPrefactorDeliveredAction } from "@/features/prefactor/actions"
+import { Button } from "@/components/ui/button";
+import { markPrefactorDeliveredAction } from "@/features/prefactor/actions";
 
 export function PrefactorDeliverButton({
   id,
   isDelivered,
 }: {
-  id: string
-  isDelivered: boolean
+  id: string;
+  isDelivered: boolean;
 }) {
-  const [pending, startTransition] = useTransition()
+  const [pending, startTransition] = useTransition();
 
   return (
     <Button
@@ -21,11 +21,11 @@ export function PrefactorDeliverButton({
       disabled={pending || isDelivered}
       onClick={() => {
         startTransition(async () => {
-          await markPrefactorDeliveredAction(id)
-        })
+          await markPrefactorDeliveredAction(id);
+        });
       }}
     >
       {pending ? "..." : "تحویل داده شد"}
     </Button>
-  )
+  );
 }

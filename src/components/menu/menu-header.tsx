@@ -1,5 +1,5 @@
-import { Stack } from "@/components/layout"
-import { BrandMark } from "@/components/menu/brand-mark"
+import { Stack } from "@/components/layout";
+import { BrandMark } from "@/components/menu/brand-mark";
 
 export function MenuHeader({ name }: { name: string }) {
   return (
@@ -9,5 +9,5 @@ export function MenuHeader({ name }: { name: string }) {
         <h1 className="font-brand text-[18px] font-normal text-text">{name}</h1>
       </Stack>
     </header>
-  )
+  );
 }

@@ -1,37 +1,37 @@
-import { headers } from "next/headers"
+import { headers } from "next/headers";
 
-import { requireManager } from "@/lib/admin/session"
-import { SettingsForm } from "@/components/admin/settings-form"
-import { SettingsQrCodes } from "@/components/admin/settings-qr-codes"
-import { Stack } from "@/components/layout"
-import { getRestaurant } from "@/lib/db/restaurant"
-import { listCategories } from "@/lib/menu/category"
+import { requireManager } from "@/lib/admin/session";
+import { SettingsForm } from "@/components/admin/settings-form";
+import { SettingsQrCodes } from "@/components/admin/settings-qr-codes";
+import { Stack } from "@/components/layout";
+import { getRestaurant } from "@/lib/db/restaurant";
+import { listCategories } from "@/lib/menu/category";
 
 async function getRequestOrigin() {
-  const requestHeaders = await headers()
+  const requestHeaders = await headers();
   const host =
-    requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host")
-  const protocol = requestHeaders.get("x-forwarded-proto") ?? "http"
+    requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host");
+  const protocol = requestHeaders.get("x-forwarded-proto") ?? "http";
 
-  return host ? `${protocol}://${host}` : ""
+  return host ? `${protocol}://${host}` : "";
 }
 
 export default async function AdminSettingsPage() {
-  await requireManager()
+  await requireManager();
   const [restaurant, categories, origin] = await Promise.all([
     getRestaurant(),
     listCategories(),
     getRequestOrigin(),
-  ])
+  ]);
 
   return (
     <Stack gap={8} className="w-full">
       <Stack gap={1}>
-        <h1 className="text-lg md:text-xl font-semibold">تنظیمات</h1>
-        <p className="text-xs md:text-sm text-text/70 text-justify">
-          قیمت پایه قهوه به‌ازای کیلوگرم است. گرم مصرفی هر آیتم در فرم آیتم
-          وارد می‌شود و هزینه قهوه خودکار به قیمت منو اضافه می‌گردد. سپس سود و
-          آفر اعمال می‌شود. قیمت ذخیره‌شده در پنل همان قیمت اولیه است.
+        <h1 className="text-lg font-semibold md:text-xl">تنظیمات</h1>
+        <p className="text-justify text-xs text-text/70 md:text-sm">
+          قیمت پایه قهوه به‌ازای کیلوگرم است. گرم مصرفی هر آیتم در فرم آیتم وارد
+          می‌شود و هزینه قهوه خودکار به قیمت منو اضافه می‌گردد. سپس سود و آفر
+          اعمال می‌شود. قیمت ذخیره‌شده در پنل همان قیمت اولیه است.
         </p>
       </Stack>
       <div className="max-w-xl">
@@ -47,5 +47,5 @@ export default async function AdminSettingsPage() {
       </div>
       <SettingsQrCodes origin={origin} />
     </Stack>
-  )
+  );
 }

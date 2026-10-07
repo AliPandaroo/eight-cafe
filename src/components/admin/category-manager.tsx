@@ -92,7 +92,7 @@ function CategoryRow({
           gap={2}
           wrap="wrap"
           justify="between"
-          className="max-w-28 md:max-w-[8.4rem] self-end"
+          className="max-w-28 self-end md:max-w-[8.4rem]"
         >
           <Button type="submit" disabled={pending || isPending || !name.trim()}>
             ذخیره
@@ -159,7 +159,11 @@ export function CategoryManager({
                 onChange={(event) => setName(event.target.value)}
               />
 
-              <Button variant="primary" type="submit" disabled={pending || !name.trim()}>
+              <Button
+                variant="primary"
+                type="submit"
+                disabled={pending || !name.trim()}
+              >
                 <PlusIcon className="size-5" />
               </Button>
             </Flex>

@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import { useTransition } from "react"
+import { useTransition } from "react";
 
-import { Button } from "@/components/ui/button"
-import { deleteExpenseAction } from "@/features/expense/actions"
-import { formatPrice } from "@/lib/format"
-import { formatPrefactorTime } from "@/lib/prefactor/range"
-import type { ExpenseRecord } from "@/types/expense"
+import { Button } from "@/components/ui/button";
+import { deleteExpenseAction } from "@/features/expense/actions";
+import { formatPrice } from "@/lib/format";
+import { formatPrefactorTime } from "@/lib/prefactor/range";
+import type { ExpenseRecord } from "@/types/expense";
 
 function ExpenseDeleteButton({ id }: { id: string }) {
-  const [pending, startTransition] = useTransition()
+  const [pending, startTransition] = useTransition();
 
   return (
     <Button
@@ -18,22 +18,22 @@ function ExpenseDeleteButton({ id }: { id: string }) {
       disabled={pending}
       onClick={() => {
         startTransition(async () => {
-          await deleteExpenseAction(id)
-        })
+          await deleteExpenseAction(id);
+        });
       }}
     >
       {pending ? "..." : "حذف"}
     </Button>
-  )
+  );
 }
 
 export function ExpenseList({ expenses }: { expenses: ExpenseRecord[] }) {
   if (expenses.length === 0) {
-    return <p className="text-sm text-text/70">این هفته هزینه‌ای ثبت نشده.</p>
+    return <p className="text-sm text-text/70">این هفته هزینه‌ای ثبت نشده.</p>;
   }
 
   return (
-    <div className="divide-y divide-foreground/10 rounded-[var(--radius)] border border-foreground/15">
+    <div className="divide-y divide-foreground/10 rounded-(--radius) border border-foreground/15">
       {expenses.map((expense) => (
         <div
           key={expense.id}

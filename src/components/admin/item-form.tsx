@@ -45,10 +45,11 @@ export function ItemForm({
           id: variant.id,
           title: variant.title,
           price: priceToAdminInput(variant.price),
+          coffeeGrams: variant.coffeeGrams ? String(variant.coffeeGrams) : "",
         }))
       : [
-          { id: "", title: "", price: "" },
-          { id: "", title: "", price: "" },
+          { id: "", title: "", price: "", coffeeGrams: "" },
+          { id: "", title: "", price: "", coffeeGrams: "" },
         ],
   );
 
@@ -112,10 +113,10 @@ export function ItemForm({
           </Field>
         )}
 
-        <Stack className="border border-foreground/15 rounded-[var(--radius)] p-2">
-          <label className="flex items-center gap-2 text-sm cursor-pointer">
+        <Stack className="rounded-(--radius) border border-foreground/15 p-2">
+          <label className="flex cursor-pointer items-center gap-2 text-sm">
             <input
-              className="inline-block size-6 rounded border border-foreground/30 appearance-none bg-transparent checked:bg-foreground"
+              className="inline-block size-6 appearance-none rounded border border-foreground/30 bg-transparent checked:bg-foreground"
               type="checkbox"
               name="hasVariants"
               value="true"
@@ -124,8 +125,8 @@ export function ItemForm({
                 setHasVariants(event.target.checked);
                 if (event.target.checked && variants.length < 2) {
                   setVariants([
-                    { id: "", title: "", price: "" },
-                    { id: "", title: "", price: "" },
+                    { id: "", title: "", price: "", coffeeGrams: "" },
+                    { id: "", title: "", price: "", coffeeGrams: "" },
                   ]);
                 }
               }}
@@ -138,7 +139,7 @@ export function ItemForm({
               {variants.map((variant, index) => (
                 <div
                   key={`${variant.id}-${index}`}
-                  className="grid grid-cols-2 gap-2 rounded-[var(--radius)] border border-foreground/15 p-2"
+                  className="grid grid-cols-2 gap-2 rounded-(--radius) border border-foreground/15 p-2 md:grid-cols-3"
                 >
                   {variant.id ? (
                     <input type="hidden" name="variantId" value={variant.id} />
@@ -154,7 +155,6 @@ export function ItemForm({
                         next[index] = { ...variant, title: event.target.value };
                         setVariants(next);
                       }}
-                      placeholder="بزرگ"
                       required
                     />
                   </Field>
@@ -171,11 +171,28 @@ export function ItemForm({
                       required
                     />
                   </Field>
+                  <div className="col-span-2 md:col-span-1">
+                    <Field label="گرم قهوه">
+                      <Input
+                        name="variantCoffeeGrams"
+                        inputMode="decimal"
+                        value={variant.coffeeGrams}
+                        onChange={(event) => {
+                          const next = [...variants];
+                          next[index] = {
+                            ...variant,
+                            coffeeGrams: event.target.value,
+                          };
+                          setVariants(next);
+                        }}
+                      />
+                    </Field>
+                  </div>
                   {variants.length > 1 ? (
                     <Button
                       type="button"
                       variant="danger"
-                      className="col-span-2 self-start px-2 py-1 text-[11px]"
+                      className="col-span-full self-start px-2 py-1 text-[11px]"
                       onClick={() =>
                         setVariants(variants.filter((_, row) => row !== index))
                       }
@@ -190,7 +207,10 @@ export function ItemForm({
                 variant="ghost"
                 className="self-end p-1"
                 onClick={() =>
-                  setVariants([...variants, { id: "", title: "", price: "" }])
+                  setVariants([
+                    ...variants,
+                    { id: "", title: "", price: "", coffeeGrams: "" },
+                  ])
                 }
               >
                 <PlusIcon className="size-5 text-foreground!" />
@@ -198,23 +218,32 @@ export function ItemForm({
             </Stack>
           ) : null}
         </Stack>
-        <Field
-          label="گرم قهوه مصرفی"
-          error={
-            state && !state.ok ? state.fieldErrors?.coffeeGrams?.[0] : undefined
-          }
-        >
-          <Input
-            name="coffeeGrams"
-            inputMode="decimal"
-            defaultValue={item?.coffeeGrams ? String(item.coffeeGrams) : ""}
-            placeholder="مثلاً ۲۱"
-          />
-          <p className="mt-1 text-[10px] md:text-xs text-text/55">
-            هزینه قهوه خودکار حساب می‌شود و به قیمت پایه اضافه می‌گردد. برای
-            آیتم بدون قهوه خالی بگذارید.
+        {hasVariants ? (
+          <p className="text-[10px] text-text/55 md:text-xs">
+            هزینه قهوه هر سایز جدا حساب می‌شود و به قیمت پایه همان سایز اضافه
+            می‌گردد.
           </p>
-        </Field>
+        ) : (
+          <Field
+            label="گرم قهوه مصرفی"
+            error={
+              state && !state.ok
+                ? state.fieldErrors?.coffeeGrams?.[0]
+                : undefined
+            }
+          >
+            <Input
+              name="coffeeGrams"
+              inputMode="decimal"
+              defaultValue={item?.coffeeGrams ? String(item.coffeeGrams) : ""}
+              placeholder="مثلاً ۲۱"
+            />
+            <p className="mt-1 text-[10px] text-text/55 md:text-xs">
+              هزینه قهوه خودکار حساب می‌شود و به قیمت پایه اضافه می‌گردد. برای
+              آیتم بدون قهوه خالی بگذارید.
+            </p>
+          </Field>
+        )}
 
         <Field label="تصویر">
           <Input
@@ -230,7 +259,7 @@ export function ItemForm({
             <img
               src={item.imageUrl}
               alt={item.name}
-              className="h-28 w-28 rounded-[var(--radius)] object-cover"
+              className="h-28 w-28 rounded-(--radius) object-cover"
             />
             <Button
               variant="ghost"
@@ -242,9 +271,9 @@ export function ItemForm({
           </Stack>
         ) : null}
 
-        <label className="flex items-center gap-2 text-sm cursor-pointer">
+        <label className="flex cursor-pointer items-center gap-2 text-sm">
           <input
-            className="inline-block size-6 rounded border border-foreground/30 appearance-none bg-transparent checked:bg-foreground focus:ring-foreground"
+            className="inline-block size-6 appearance-none rounded border border-foreground/30 bg-transparent checked:bg-foreground focus:ring-foreground"
             type="checkbox"
             name="isAvailable"
             value="true"

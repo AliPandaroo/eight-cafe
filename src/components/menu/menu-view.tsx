@@ -25,7 +25,11 @@ import {
 import { PrefactorTray } from "@/components/menu/prefactor-tray";
 import { StaffRoleContext } from "@/components/menu/staff-role";
 import { Button } from "@/components/ui/button";
-import { canBuildPrefactor, homeForRole, type PublicRole } from "@/lib/auth/roles";
+import {
+  canBuildPrefactor,
+  homeForRole,
+  type PublicRole,
+} from "@/lib/auth/roles";
 import type { PublicMenu } from "@/lib/menu/public";
 import { cn } from "@/utils/classMerge";
 
@@ -72,9 +76,11 @@ function useSelectedItemId() {
 export function MenuView({
   menu,
   role,
+  coffeeOnly = false,
 }: {
   menu: PublicMenu;
   role: PublicRole;
+  coffeeOnly?: boolean;
 }) {
   const prefersReducedMotion = usePrefersReducedMotion();
   const itemId = useSelectedItemId();
@@ -82,7 +88,10 @@ export function MenuView({
   const [introComplete, setIntroComplete] = useState(false);
   const progress = useMotionValue(0);
 
-  if (!introComplete && (prefersReducedMotion || itemId || phase === "menu")) {
+  if (
+    !introComplete &&
+    (prefersReducedMotion || itemId || coffeeOnly || phase === "menu")
+  ) {
     setIntroComplete(true);
   }
 
@@ -218,7 +227,7 @@ export function MenuView({
                 <Logo size="large" />
               </motion.div>
               <motion.h1
-                className="font-brand origin-center text-center text-[18px] font-normal text-text"
+                className="origin-center text-center font-brand text-[18px] font-normal text-text"
                 initial={false}
                 animate={{
                   scale: activePhase === "loading" ? 1 : 0.92,
@@ -248,6 +257,7 @@ export function MenuView({
             <>
               <CategoryNav
                 reveal={!skipIntro}
+                coffeeOnly={coffeeOnly}
                 categories={visibleCategories.map((category) => ({
                   id: category.id,
                   slug: category.slug,
@@ -257,7 +267,9 @@ export function MenuView({
 
               {visibleCategories.length === 0 ? (
                 <p className="px-4 py-16 text-center text-[13px] text-text/65 md:px-8">
-                  منو هنوز آماده نیست.
+                  {coffeeOnly
+                    ? "آیتمی با قهوه پیدا نشد."
+                    : "منو هنوز آماده نیست."}
                 </p>
               ) : (
                 <div
@@ -271,7 +283,7 @@ export function MenuView({
                     <section
                       key={category.id}
                       id={category.slug}
-                      className="scroll-mt-24 border-b border-foreground/15 py-4 last:border-b-0 md:py-10 max-w-xl md:max-w-5xl mx-auto"
+                      className="mx-auto max-w-xl scroll-mt-24 border-b border-foreground/15 py-4 last:border-b-0 md:max-w-5xl md:py-10"
                     >
                       <h2 className="mb-2 text-[13px] text-text/55 md:mb-6">
                         {category.name}
@@ -292,11 +304,26 @@ export function MenuView({
 
               <footer className="flex flex-col items-center gap-2 px-4 pb-8 text-center text-[11px] text-text-disabled">
                 {role === "waiter" ? (
-                  <Image src="/static/wine.png" alt="گارسون" width={76} height={76} />
+                  <Image
+                    src="/static/wine.png"
+                    alt="گارسون"
+                    width={76}
+                    height={76}
+                  />
                 ) : role === "manager" ? (
-                  <Image src="/static/manager.png" alt="مدیر" width={76} height={76} />
+                  <Image
+                    src="/static/manager.png"
+                    alt="مدیر"
+                    width={76}
+                    height={76}
+                  />
                 ) : (
-                  <Image src="/static/menu.png" alt="منو" width={76} height={76} />
+                  <Image
+                    src="/static/menu.png"
+                    alt="منو"
+                    width={76}
+                    height={76}
+                  />
                 )}
                 <Logo size="mini" color="#ffffff" />
               </footer>
@@ -305,7 +332,11 @@ export function MenuView({
 
           <AnimatePresence>
             {selectedItem ? (
-              <ItemDetail key={selectedItem.id} item={selectedItem} />
+              <ItemDetail
+                key={selectedItem.id}
+                item={selectedItem}
+                coffeeOnly={coffeeOnly}
+              />
             ) : null}
           </AnimatePresence>
           {canBuildPrefactor(role) && activePhase === "menu" ? (
@@ -316,7 +347,7 @@ export function MenuView({
               asChild
               variant="circle"
               className={cn(
-                "fixed bottom-5 z-50 size-14 rounded-full p-0 right-4 shadow-2xl",
+                "fixed right-4 bottom-5 z-50 size-14 rounded-full p-0 shadow-2xl",
                 role === "waiter" ? "" : "",
               )}
             >
